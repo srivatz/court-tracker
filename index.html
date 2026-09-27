@@ -60,8 +60,13 @@
         <div class="tab active" id="loginTabBtn" onclick="showAuthTab('login')">Sign In</div>
         <div class="tab" id="registerTabBtn" onclick="showAuthTab('register')">Register</div>
       </div>
-      <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Email Address</label>
-      <input type="email" id="authEmail" placeholder="player@domain.com">
+      <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Username</label>
+      <input type="text" id="authUsername" placeholder="e.g. lin_dan" autocapitalize="none" autocorrect="off">
+      <div id="registerEmailGroup" style="display:none;">
+        <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Email Address</label>
+        <input type="email" id="authEmail" placeholder="player@domain.com">
+        <div class="sub" style="margin-top:-6px; margin-bottom:10px;">Only used for account recovery — you'll sign in with your username.</div>
+      </div>
       <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Password</label>
       <div class="password-input-container">
         <input type="password" id="authPassword" placeholder="••••••••">
@@ -69,53 +74,73 @@
           <i data-lucide="eye" id="eyeIcon" style="width:18px; height:18px;"></i>
         </button>
       </div>
+      <div id="forgotPasswordRow" style="text-align:right; margin:-6px 0 14px;">
+        <span onclick="promptForgotPassword()" style="font-size:0.75rem; color:var(--brand-accent); cursor:pointer; font-weight:600;">Forgot password?</span>
+      </div>
       <button id="authSubmitActionBtn" onclick="submitAuth()">Sign In</button>
     </div>
     <div id="appWrap" style="display:none;">
-      <div id="adminBar" class="panel-card" style="display:none; border:2px solid var(--brand-accent);"></div>
-      <div class="panel-card">
-        <h2>🗓️ Sessions Tracker Picker</h2>
-        <div class="sub">Tap highlighted calendar slots to claim attendance flags.</div>
-        <div id="calendarDisplayGrid" class="interactive-calendar"></div>
+      <div class="tabs" id="appTabs">
+        <div class="tab active" id="tabBtnBookings" onclick="showAppTab('bookings')">📅 Bookings</div>
+        <div class="tab" id="tabBtnShuttle" onclick="showAppTab('shuttle')">📦 Shuttle</div>
+        <div class="tab" id="tabBtnUsers" style="display:none;" onclick="showAppTab('users')">👑 Users</div>
       </div>
-      <div class="panel-card">
-        <h2>📦 Shuttlecock Supplies Track</h2>
-        <div class="sub">Add stock batches. Calculations spread costs automatically across player sessions falling in range.</div>
-        <div id="adminShuttleCard" style="display:none; margin-bottom:12px; border-bottom:1px dashed var(--border-subtle); padding-bottom:12px;">
-          <div style="display:flex; gap:8px;"><input type="date" id="sStart"><input type="date" id="sEnd"></div>
-          <input type="text" id="sBuyer" placeholder="Purchaser Name (e.g., Lin Dan)" style="margin-top:4px;">
-          <div style="display:flex; gap:8px; margin-top:4px;">
-            <input type="number" id="sCost" placeholder="Total Price" style="margin-bottom:0;">
-            <button class="small" onclick="submitShuttlePurchase()" style="height:42px;">Save Tube</button>
+      <div id="tabPanelBookings">
+        <div class="panel-card">
+          <h2>🗓️ Sessions Tracker Picker</h2>
+          <div class="sub">Tap highlighted calendar slots to claim attendance flags.</div>
+          <div id="calendarDisplayGrid" class="interactive-calendar"></div>
+        </div>
+      </div>
+      <div id="tabPanelShuttle" style="display:none;">
+        <div class="panel-card">
+          <h2>📦 Shuttlecock Supplies Track</h2>
+          <div class="sub">Add stock batches. Calculations spread costs automatically across player sessions falling in range.</div>
+          <div id="adminShuttleCard" style="display:none; margin-bottom:12px; border-bottom:1px dashed var(--border-subtle); padding-bottom:12px;">
+            <div style="display:flex; gap:8px;"><input type="date" id="sStart"><input type="date" id="sEnd"></div>
+            <input type="text" id="sBuyer" placeholder="Purchaser Name (e.g., Lin Dan)" style="margin-top:4px;">
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <input type="number" id="sCost" placeholder="Total Price" style="margin-bottom:0;">
+              <button class="small" onclick="submitShuttlePurchase()" style="height:42px;">Save Tube</button>
+            </div>
           </div>
+          <div id="shuttleListSummary" style="font-size:0.8rem; color:var(--text-muted);">No recorded batches.</div>
         </div>
-        <div id="shuttleListSummary" style="font-size:0.8rem; color:var(--text-muted);">No recorded batches.</div>
+        <div id="adminLedgerPanel" class="panel-card" style="display:none; border-left:4px solid var(--color-success);">
+          <h2>💰 Personal Ledger and Cost Splits Summary</h2>
+          <div class="sub">Admin restricted workspace. Access parameters to compute court divisions and export csv files.</div>
+          <div style="background: rgba(15,23,42,0.4); padding: 12px; border-radius: var(--radius-md); border:1px solid var(--border-subtle); margin-bottom:14px;">
+            <b style="font-size:0.8rem; display:block; margin-bottom:6px; color:var(--brand-accent);">Export Financial Statement Report:</b>
+            <div style="display:flex; gap:8px; margin-bottom:8px;"><input type="date" id="csvStart" style="font-size:0.8rem; padding:8px;"><input type="date" id="csvEnd" style="font-size:0.8rem; padding:8px;"></div>
+            <button class="secondary-action small" onclick="exportCalculatedLedgerToCSV()" style="width:100%;">Generate CSV Report</button>
+          </div>
+          <div id="ledgerSummaryContainer">Processing global distributions...</div>
+        </div>
       </div>
-      <div id="adminLedgerPanel" class="panel-card" style="display:none; border-left:4px solid var(--color-success);">
-        <h2>💰 Personal Ledger and Cost Splits Summary</h2>
-        <div class="sub">Admin restricted workspace. Access parameters to compute court divisions and export csv files.</div>
-        <div style="background: rgba(15,23,42,0.4); padding: 12px; border-radius: var(--radius-md); border:1px solid var(--border-subtle); margin-bottom:14px;">
-          <b style="font-size:0.8rem; display:block; margin-bottom:6px; color:var(--brand-accent);">Export Financial Statement Report:</b>
-          <div style="display:flex; gap:8px; margin-bottom:8px;"><input type="date" id="csvStart" style="font-size:0.8rem; padding:8px;"><input type="date" id="csvEnd" style="font-size:0.8rem; padding:8px;"></div>
-          <button class="secondary-action small" onclick="exportCalculatedLedgerToCSV()" style="width:100%;">Generate CSV Report</button>
-        </div>
-        <div id="ledgerSummaryContainer">Processing global distributions...</div>
+      <div id="tabPanelUsers" style="display:none;">
+        <div id="adminBar" class="panel-card" style="border:2px solid var(--brand-accent);"></div>
       </div>
       <button class="secondary-action" onclick="window.auth.signOut()" style="margin-top:10px; margin-bottom:40px;">Disconnect Session</button>
     </div>
   </div>
   <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4", authDomain: "badminton-booking-b2c4d.firebaseapp.com", projectId: "badminton-booking-b2c4d",
-        storageBucket: "badminton-booking-b2c4d.firebasestorage.app", messagingSenderId: "127883683538", appId: "1:127883683538:web:54d610d66536bed3e46f0b"
+      apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4", authDomain: "badminton-booking-b2c4d.firebaseapp.com", projectId: "badminton-booking-b2c4d",
+      storageBucket: "badminton-booking-b2c4d.firebasestorage.app", messagingSenderId: "127883683538", appId: "1:127883683538:web:54d610d66536bed3e46f0b"
     };
-    firebase.initializeApp(firebaseConfig); window.db = firebase.firestore(); window.auth = firebase.auth();
+    try {
+      if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+      window.db = firebase.firestore(); window.auth = firebase.auth();
+    } catch (err) {
+      console.error('Firebase initialization failed:', err);
+      alert('Firebase failed to initialize: ' + err.message + '\n\nCheck your firebaseConfig values in the file.');
+    }
     window.appState = { currentUser: null, currentUserData: { isAdmin: false, approved: false }, cachedSessions: [], cachedShuttles: [], cachedUsers: [], currentMonth: new Date().getMonth(), currentYear: new Date().getFullYear(), authMode: 'login' };
     lucide.createIcons();
     function showAuthTab(m) {
-      window.appState.authMode = m; const lTab = document.getElementById('loginTabBtn'), rTab = document.getElementById('registerTabBtn'), t = document.getElementById('authTitle'), s = document.getElementById('authSubText'), a = document.getElementById('authSubmitActionBtn');
-      if (m === 'login') { lTab.classList.add('active'); rTab.classList.remove('active'); t.innerText = "🏸 Court Tracker Sign In"; s.innerText = "Enter credentials to log in."; a.innerText = "Sign In"; }
-      else { rTab.classList.add('active'); lTab.classList.remove('active'); t.innerText = "🏸 Create Portal Account"; s.innerText = "Sign up to request group access."; a.innerText = "Submit Request"; }
+      window.appState.authMode = m; const lTab = document.getElementById('loginTabBtn'), rTab = document.getElementById('registerTabBtn'), t = document.getElementById('authTitle'), s = document.getElementById('authSubText'), a = document.getElementById('authSubmitActionBtn'), eG = document.getElementById('registerEmailGroup'), fP = document.getElementById('forgotPasswordRow');
+      if (m === 'login') { lTab.classList.add('active'); rTab.classList.remove('active'); t.innerText = "🏸 Court Tracker Sign In"; s.innerText = "Enter your username and password to log in."; a.innerText = "Sign In"; eG.style.display = 'none'; fP.style.display = 'block'; }
+      else { rTab.classList.add('active'); lTab.classList.remove('active'); t.innerText = "🏸 Create Portal Account"; s.innerText = "Pick a username to sign in with, sign up to request group access."; a.innerText = "Submit Request"; eG.style.display = 'block'; fP.style.display = 'none'; }
     }
     function togglePasswordVisibility() {
       const p = document.getElementById('authPassword'), i = document.getElementById('eyeIcon');
@@ -125,15 +150,23 @@
     function setAuthBtnState(busy, label) {
       const b = document.getElementById('authSubmitActionBtn'); b.disabled = busy; if (label) b.innerText = label;
     }
+    function normalizeUsername(raw) { return raw.trim().toLowerCase().replace(/\s+/g, ''); }
     function submitAuth() {
-      const e = document.getElementById('authEmail').value.trim(), p = document.getElementById('authPassword').value;
-      if (!e || !p) return alert("Fill fields.");
+      const uname = normalizeUsername(document.getElementById('authUsername').value || '');
+      const p = document.getElementById('authPassword').value;
+      if (!uname || !p) return alert("Fill fields.");
       if (window.appState.authMode === 'login') {
         setAuthBtnState(true, 'Signing In...');
-        window.auth.signInWithEmailAndPassword(e, p)
+        window.db.collection('usernames').doc(uname).get()
+          .then(doc => {
+            if (!doc.exists) throw { message: "No account found for that username." };
+            return window.auth.signInWithEmailAndPassword(doc.data().email, p);
+          })
           .catch(err => alert(err.message))
           .finally(() => setAuthBtnState(false, 'Sign In'));
       } else {
+        const e = document.getElementById('authEmail').value.trim();
+        if (!e) return alert("Fill fields.");
         if (p.length < 6) return alert("Password must be at least 6 characters.");
         setAuthBtnState(true, 'Submitting...');
         // Guard: block onAuthStateChanged from reacting to the auth-state churn
@@ -142,18 +175,25 @@
         // exists, sign the brand-new account back out, and orphan it.
         window.appState.isRegistering = true;
         let wasFirstUser = false;
-        window.auth.createUserWithEmailAndPassword(e, p)
+        window.db.collection('usernames').doc(uname).get()
+          .then(existing => {
+            if (existing.exists) throw { message: "That username is already taken." };
+            return window.auth.createUserWithEmailAndPassword(e, p);
+          })
           .then(cred => window.db.collection('users').limit(1).get().then(snap => {
             wasFirstUser = snap.empty;
-            return window.db.collection('users').doc(cred.user.uid).set({
-              email: e, approved: wasFirstUser, isAdmin: wasFirstUser,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            return Promise.all([
+              window.db.collection('users').doc(cred.user.uid).set({
+                username: uname, email: e, approved: wasFirstUser, isAdmin: wasFirstUser,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              }),
+              window.db.collection('usernames').doc(uname).set({ email: e, uid: cred.user.uid })
+            ]);
           }))
           .then(() => window.auth.signOut())
           .then(() => {
             window.appState.isRegistering = false;
-            alert(wasFirstUser ? "Account created! As the first user you're auto-approved as admin — sign in now." : "Requested! Notify admins.");
+            alert(wasFirstUser ? "Account created! As the first user you're auto-approved as admin — sign in with your username now." : "Requested! Notify admins.");
             showAuthTab('login');
           })
           .catch(err => {
@@ -164,19 +204,39 @@
           .finally(() => setAuthBtnState(false, window.appState.authMode === 'login' ? 'Sign In' : 'Submit Request'));
       }
     }
-    window.auth.onAuthStateChanged(u => {
+    function promptForgotPassword() {
+      const raw = prompt("Enter your username to receive a password reset email:");
+      if (!raw) return;
+      const uname = normalizeUsername(raw);
+      window.db.collection('usernames').doc(uname).get()
+        .then(doc => {
+          if (!doc.exists) { alert("No account found for that username."); return; }
+          return window.auth.sendPasswordResetEmail(doc.data().email).then(() => alert("Reset email sent to the address on file for that username — check your inbox."));
+        })
+        .catch(err => alert(err.message));
+    }
+    function showAppTab(tab) {
+      const panels = { bookings: 'tabPanelBookings', shuttle: 'tabPanelShuttle', users: 'tabPanelUsers' };
+      const btns = { bookings: 'tabBtnBookings', shuttle: 'tabBtnShuttle', users: 'tabBtnUsers' };
+      Object.keys(panels).forEach(k => {
+        document.getElementById(panels[k]).style.display = (k === tab) ? 'block' : 'none';
+        document.getElementById(btns[k]).classList.toggle('active', k === tab);
+      });
+    }
+    if (window.auth) window.auth.onAuthStateChanged(u => {
       if (window.appState.isRegistering) return;
-      const aW = document.getElementById('authWrap'), apW = document.getElementById('appWrap'), aB = document.getElementById('adminBar'), sC = document.getElementById('adminShuttleCard'), lP = document.getElementById('adminLedgerPanel');
+      const aW = document.getElementById('authWrap'), apW = document.getElementById('appWrap'), sC = document.getElementById('adminShuttleCard'), lP = document.getElementById('adminLedgerPanel'), uTab = document.getElementById('tabBtnUsers');
       if (u) {
         window.db.collection('users').doc(u.uid).get().then(d => {
           if (d.exists && d.data().approved === true) {
             window.appState.currentUser = u; window.appState.currentUserData = d.data(); aW.style.display = 'none'; apW.style.display = 'block';
-            if (d.data().isAdmin === true) { aB.style.display = 'block'; sC.style.display = 'block'; lP.style.display = 'block'; startAdminListeners(); }
-            else { aB.style.display = 'none'; sC.style.display = 'none'; lP.style.display = 'none'; }
+            showAppTab('bookings');
+            if (d.data().isAdmin === true) { uTab.style.display = 'block'; sC.style.display = 'block'; lP.style.display = 'block'; startAdminListeners(); }
+            else { uTab.style.display = 'none'; sC.style.display = 'none'; lP.style.display = 'none'; }
             startCoreSyncStreams();
           } else { window.auth.signOut(); alert("Pending validation."); }
         }).catch(() => window.auth.signOut());
-      } else { aW.style.display = 'block'; apW.style.display = 'none'; aB.style.display = 'none'; }
+      } else { aW.style.display = 'block'; apW.style.display = 'none'; uTab.style.display = 'none'; }
     });
     function startCoreSyncStreams() {
       window.db.collection('sessions').onSnapshot(s => { window.appState.cachedSessions = []; s.forEach(d => window.appState.cachedSessions.push(d.data())); drawCalendarView(); recomputeFinancials(); });
