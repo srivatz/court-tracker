@@ -1,46 +1,55 @@
 :root {
-  --bg-app: #f8fafc;
-  --bg-surface: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --brand-accent: #0284c7;
-  --brand-dark: #0369a1;
-  --border-subtle: #e2e8f0;
-  --color-success: #16a34a;
-  --color-danger: #dc2626;
-  --radius-lg: 12px;
-  --radius-md: 8px;
+  --bg-app: #0f172a;
+  --bg-surface: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --brand-accent: #38bdf8;
+  --brand-dark: #0ea5e9;
+  --border-subtle: #334155;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --radius-lg: 16px;
+  --radius-md: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-app: #0f172a;
-    --bg-surface: #1e293b;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --brand-accent: #38bdf8;
-    --brand-dark: #0ea5e9;
-    --border-subtle: #334155;
-  }
+body {
+  margin: 0;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 30px 16px;
+  position: relative;
+  min-height: 100vh;
 }
 
-* { box-sizing: border-box; transition: all 0.2s ease-in-out; }
-body { margin: 0; background: var(--bg-app); color: var(--text-main); font-family: system-ui, -apple-system, sans-serif; padding: 24px 16px; }
-.portal-container { max-width: 800px; margin: 0 auto; }
+/* Opaque Watermark Backdrop Overlay featuring legendary athletic silhouettes */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url('https://wallpaperaccess.com'); /* Standard artistic backdrop fallback */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.04; /* Maintains low legibility footprint to prevent text masking errors */
+  z-index: -1;
+  pointer-events: none;
+}
 
-.panel-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
-h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 16px; letter-spacing: -0.025em; }
+.portal-container { max-width: 850px; margin: 0 auto; }
+.panel-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
 
-.interactive-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 12px; }
-.calendar-day-node { background: var(--bg-app); border: 1px solid var(--border-subtle); padding: 12px 8px; border-radius: var(--radius-md); text-align: center; cursor: pointer; position: relative; }
-.calendar-day-node.active-session { border-left: 4px solid var(--brand-accent); background: linear-gradient(135deg, var(--bg-surface), var(--bg-app)); }
+/* Month Navigation Bars */
+.calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; background: var(--bg-app); padding: 10px; border-radius: var(--radius-md); }
+.calendar-controls button { width: auto; padding: 6px 14px; font-size: 0.85rem; }
 
-.pill-badge { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-.pill-badge.status-joined { background: rgba(22, 163, 74, 0.1); color: var(--color-success); }
-.pill-badge.status-absent { background: rgba(100, 116, 139, 0.1); color: var(--text-muted); }
+.interactive-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 14px; }
+.calendar-header-cell { text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--brand-accent); text-transform: uppercase; padding-bottom: 6px; }
 
-input, select { width: 100%; padding: 10px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; }
-input:focus { outline: 2px solid var(--brand-accent); }
-button { width: 100%; background: var(--brand-accent); color: #fff; border: none; padding: 11px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; }
-button:hover { background: var(--brand-dark); }
-button.secondary-action { background: transparent; color: var(--text-main); border: 1px solid var(--border-subtle); }
+.calendar-day-node { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); padding: 14px 8px; border-radius: var(--radius-md); text-align: center; cursor: pointer; min-height: 75px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+.calendar-day-node:hover { border-color: var(--brand-accent); background: rgba(56, 189, 248, 0.05); }
+.calendar-day-node.active-session { border: 2px solid var(--brand-accent); background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.8)); }
+
+.password-input-container { position: relative; display: flex; align-items: center; width: 100%; }
+.password-toggle-trigger { position: absolute; right: 12px; background: none; border: none; color: var(--text-muted); width: auto; padding: 0; font-size: 0.82rem; cursor: pointer; }
+.password-toggle-trigger:hover { color: var(--brand-accent); }
