@@ -107,7 +107,7 @@
           <div id="shuttleListSummary" style="font-size:0.8rem; color:var(--text-muted);">No recorded batches.</div>
         </div>
         <div id="adminLedgerPanel" class="panel-card" style="display:none; border-left:4px solid var(--color-success);">
-          <h2>💰 Personal Ledger and Cost Splits Summary</h2>
+          <h2>💰 Cost Splits Summary</h2>
           <div class="sub">Admin restricted workspace. Access parameters to compute court divisions and export csv files.</div>
           <div style="background: rgba(15,23,42,0.4); padding: 12px; border-radius: var(--radius-md); border:1px solid var(--border-subtle); margin-bottom:14px;">
             <b style="font-size:0.8rem; display:block; margin-bottom:6px; color:var(--brand-accent);">Export Financial Statement Report:</b>
@@ -249,7 +249,7 @@
     }
     function startAdminListeners() {
       window.db.collection('users').onSnapshot(s => {
-        let pHtml = '<b>👑 Open Approvals Queue:</b>', prHtml = '<b style="display:block; margin-top:14px;">👑 Active Group Directory Roles:</b>', hP = false;
+        let pHtml = '<b>👑 Open Approvals Queue:</b>', prHtml = '<b style="display:block; margin-top:14px;">👑 User List:</b>', hP = false;
         s.forEach(d => {
           const u = d.data();
           if (u.approved === false) { hP = true; pHtml += `<div class="toggle-row"><span>${u.email}</span><button class="small" onclick="adminToggleField('${d.id}','approved',true)">Approve</button></div>`; }
