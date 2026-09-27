@@ -1,53 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Badminton Court Portal</title>
-  <link rel="stylesheet" href="styles.css">
+<!-- Replace your index.html's authWrap panel-card wrapper block with this updated design structure -->
+<div id="authWrap" class="panel-card" style="max-width: 450px; margin: 60px auto;">
+  <h2 id="authTitle">🏸 Court Tracker Sign In</h2>
+  <div class="sub" id="authSubText">Enter your credentials to access the court logs.</div>
   
-  <!-- Core SDK Scripts -->
-  <script src="https://gstatic.com"></script>
-  <script src="https://gstatic.com"></script>
-  <script src="https://gstatic.com"></script>
-</head>
-<body>
-  <div class="portal-container">
-    
-    <!-- Authentication Layer Wrapper -->
-    <div id="authWrap" class="panel-card">
-      <h2>🏸 Court Tracker Entry Portal</h2>
-      <input type="email" id="authEmail" placeholder="Email Address" style="margin-bottom:12px;">
-      <input type="password" id="authPassword" placeholder="Password Fields">
-      <button onclick="submitAuth()" style="margin-top:14px;">Access Portal Account</button>
-    </div>
-
-    <!-- Protected Application Views Layout Skeletons -->
-    <div id="appWrap" style="display:none;">
-      
-      <!-- Admin Action Bars Panel Elements -->
-      <div id="adminBar" class="panel-card" style="display:none; border-color:var(--brand-accent);"></div>
-
-      <!-- Core Interactive Calendar View Section -->
-      <div class="panel-card">
-        <h2>🗓️ Select Dates & Manage Availability</h2>
-        <div class="sub">Click on highlighted match dates to mark your presence or change attendance status flag flags.</div>
-        <div id="calendarDisplayGrid" class="interactive-calendar"></div>
-      </div>
-
-      <!-- Live Calculated Balances Overview Layout Panel Elements -->
-      <div class="panel-card">
-        <h2>💰 Personal Ledger and Cost Splits Summary</h2>
-        <div id="userLedgerDisplay" class="sub">Loading financial distributions...</div>
-      </div>
-
-    </div>
+  <div class="tabs" style="display:flex; gap:6px; margin-bottom:14px;">
+    <div class="tab active" id="loginTabBtn" onclick="showAuthTab('login')" style="flex:1; text-align:center; padding:9px; border-radius:var(--radius-md); cursor:pointer; background:var(--bg-app); border:1px solid var(--border-subtle); font-size:0.85rem;">Sign In</div>
+    <div class="tab" id="registerTabBtn" onclick="showAuthTab('register')" style="flex:1; text-align:center; padding:9px; border-radius:var(--radius-md); cursor:pointer; background:var(--bg-app); border:1px solid var(--border-subtle); font-size:0.85rem;">Register</div>
   </div>
 
-  <!-- Internal Business Infrastructure Code Modules Imports -->
-  <script src="app-config.js"></script>
-  <script src="module-expenses.js"></script>
-  <script src="module-sessions.js"></script>
-  <script src="module-auth.js"></script>
-</body>
-</html>
+  <label>Email Address</label>
+  <input type="email" id="authEmail" placeholder="name@domain.com" style="margin-bottom:12px;">
+  
+  <label>Password</label>
+  <div class="password-input-container">
+    <input type="password" id="authPassword" placeholder="••••••••">
+    <button type="button" class="password-toggle-trigger" id="passToggleBtn" onclick="togglePasswordVisibility()">Show</button>
+  </div>
+  
+  <button id="authSubmitActionBtn" onclick="submitAuth()" style="margin-top:20px;">Sign In</button>
+</div>
+
+<script>
+  // Simple UI tab switcher function embedded directly on page layout script layer
+  window.authMode = 'login';
+  
+  function showAuthTab(mode) {
+    window.authMode = mode;
+    const loginTab = document.getElementById('loginTabBtn');
+    const registerTab = document.getElementById('registerTabBtn');
+    const title = document.getElementById('authTitle');
+    const subText = document.getElementById('authSubText');
+    const actionBtn = document.getElementById('authSubmitActionBtn');
+    
+    if (mode === 'login') {
+      loginTab.style.background = 'var(--brand-accent)';
+      loginTab.style.color = '#fff';
+      registerTab.style.background = 'var(--bg-app)';
+      registerTab.style.color = 'var(--text-main)';
+      title.innerText = "🏸 Court Tracker Sign In";
+      subText.innerText = "Enter your credentials to access the court logs.";
+      actionBtn.innerText = "Sign In";
+    } else {
+      registerTab.style.background = 'var(--brand-accent)';
+      registerTab.style.color = '#fff';
+      loginTab.style.background = 'var(--bg-app)';
+      loginTab.style.color = 'var(--text-main)';
+      title.innerText = "🏸 Create Portal Account";
+      subText.innerText = "Sign up to request group access from the admin.";
+      actionBtn.innerText = "Submit Request";
+    }
+  }
+</script>
