@@ -10,6 +10,7 @@
       --brand-accent: #38bdf8; --brand-dark: #0ea5e9; --border-subtle: #334155;
       --color-success: #22c55e; --color-danger: #ef4444; --radius-lg: 16px; --radius-md: 10px;
     }
+    * { box-sizing: border-box; }
     body { margin: 0; background-color: var(--bg-app); color: var(--text-main); font-family: system-ui, sans-serif; padding: 12px 8px; position: relative; min-height: 100vh; overflow-x: hidden; }
     body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=1470'); background-size: cover; background-position: center; opacity: 0.04; z-index: -1; pointer-events: none; }
     .portal-container { max-width: 650px; margin: 0 auto; width: 100%; }
@@ -28,8 +29,8 @@
     .pill-badge.status-joined { background: rgba(34, 197, 94, 0.15); color: var(--color-success); border: 1px solid var(--color-success); }
     .pill-badge.status-absent { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); border: 1px solid var(--color-danger); }
     .password-input-container { position: relative; display: flex; align-items: center; width: 100%; margin-bottom: 12px; }
-    .password-input-container input { width: 100%; padding: 11px; padding-right: 40px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.9rem; margin-bottom: 0; box-sizing: border-box; }
-    .password-toggle-trigger { position: absolute; right: 12px; background: none; border: none; color: var(--brand-accent); cursor: pointer; display: flex; align-items: center; height: 100%; z-index: 10; }
+    .password-input-container input { width: 100%; padding: 11px; padding-right: 44px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.9rem; margin-bottom: 0; box-sizing: border-box; }
+    .password-toggle-trigger { position: absolute; top: 0; bottom: 0; right: 4px; width: 36px; padding: 0; margin: 0; background: none; border: none; color: var(--brand-accent); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
     input, select { width: 100%; padding: 11px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.9rem; margin-bottom: 12px; box-sizing: border-box; }
     button { background: var(--brand-accent); color: var(--bg-app); border: none; padding: 11px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; width: 100%; font-size: 0.9rem; }
     button:hover { background: var(--brand-dark); }
@@ -64,7 +65,7 @@
       <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Password</label>
       <div class="password-input-container">
         <input type="password" id="authPassword" placeholder="••••••••">
-        <button type="button" class="password-toggle-trigger" onclick="togglePasswordVisibility()">
+        <button type="button" class="password-toggle-trigger" aria-label="Toggle password visibility" onclick="togglePasswordVisibility()">
           <i data-lucide="eye" id="eyeIcon" style="width:18px; height:18px;"></i>
         </button>
       </div>
@@ -105,12 +106,8 @@
   </div>
   <script>
     const firebaseConfig = {
-          apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4",
-          authDomain: "badminton-booking-b2c4d.firebaseapp.com",
-          projectId: "badminton-booking-b2c4d",
-          storageBucket: "badminton-booking-b2c4d.firebasestorage.app",
-          messagingSenderId: "127883683538",
-          appId: "1:127883683538:web:54d610d66536bed3e46f0b"
+        apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4", authDomain: "badminton-booking-b2c4d.firebaseapp.com", projectId: "badminton-booking-b2c4d",
+        storageBucket: "badminton-booking-b2c4d.firebasestorage.app", messagingSenderId: "127883683538", appId: "1:127883683538:web:54d610d66536bed3e46f0b"
     };
     firebase.initializeApp(firebaseConfig); window.db = firebase.firestore(); window.auth = firebase.auth();
     window.appState = { currentUser: null, currentUserData: { isAdmin: false, approved: false }, cachedSessions: [], cachedShuttles: [], cachedUsers: [], currentMonth: new Date().getMonth(), currentYear: new Date().getFullYear(), authMode: 'login' };
@@ -125,12 +122,50 @@
       if (p.type === 'password') { p.type = 'text'; i.setAttribute('data-lucide', 'eye-off'); } else { p.type = 'password'; i.setAttribute('data-lucide', 'eye'); }
       lucide.createIcons();
     }
+    function setAuthBtnState(busy, label) {
+      const b = document.getElementById('authSubmitActionBtn'); b.disabled = busy; if (label) b.innerText = label;
+    }
     function submitAuth() {
-      const e = document.getElementById('authEmail').value.trim(), p = document.getElementById('authPassword').value; if (!e || !p) return alert("Fill fields.");
-      if (window.appState.authMode === 'login') { window.auth.signInWithEmailAndPassword(e, p).catch(err => alert(err.message)); }
-      else { window.auth.createUserWithEmailAndPassword(e, p).then(c => { return window.db.collection('users').doc(c.user.uid).set({ email: e, approved: false, isAdmin: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }); }).then(() => { alert("Requested! Notify admins."); window.auth.signOut(); showAuthTab('login'); }).catch(err => alert(err.message)); }
+      const e = document.getElementById('authEmail').value.trim(), p = document.getElementById('authPassword').value;
+      if (!e || !p) return alert("Fill fields.");
+      if (window.appState.authMode === 'login') {
+        setAuthBtnState(true, 'Signing In...');
+        window.auth.signInWithEmailAndPassword(e, p)
+          .catch(err => alert(err.message))
+          .finally(() => setAuthBtnState(false, 'Sign In'));
+      } else {
+        if (p.length < 6) return alert("Password must be at least 6 characters.");
+        setAuthBtnState(true, 'Submitting...');
+        // Guard: block onAuthStateChanged from reacting to the auth-state churn
+        // that createUserWithEmailAndPassword/signOut trigger mid-registration.
+        // Without this, the listener can fire before the user's Firestore doc
+        // exists, sign the brand-new account back out, and orphan it.
+        window.appState.isRegistering = true;
+        let wasFirstUser = false;
+        window.auth.createUserWithEmailAndPassword(e, p)
+          .then(cred => window.db.collection('users').limit(1).get().then(snap => {
+            wasFirstUser = snap.empty;
+            return window.db.collection('users').doc(cred.user.uid).set({
+              email: e, approved: wasFirstUser, isAdmin: wasFirstUser,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }))
+          .then(() => window.auth.signOut())
+          .then(() => {
+            window.appState.isRegistering = false;
+            alert(wasFirstUser ? "Account created! As the first user you're auto-approved as admin — sign in now." : "Requested! Notify admins.");
+            showAuthTab('login');
+          })
+          .catch(err => {
+            window.appState.isRegistering = false;
+            if (window.auth.currentUser) window.auth.signOut();
+            alert(err.message);
+          })
+          .finally(() => setAuthBtnState(false, window.appState.authMode === 'login' ? 'Sign In' : 'Submit Request'));
+      }
     }
     window.auth.onAuthStateChanged(u => {
+      if (window.appState.isRegistering) return;
       const aW = document.getElementById('authWrap'), apW = document.getElementById('appWrap'), aB = document.getElementById('adminBar'), sC = document.getElementById('adminShuttleCard'), lP = document.getElementById('adminLedgerPanel');
       if (u) {
         window.db.collection('users').doc(u.uid).get().then(d => {
@@ -228,10 +263,8 @@
     }
     function exportCalculatedLedgerToCSV() {
       const s = document.getElementById('csvStart').value, e = document.getElementById('csvEnd').value; if (!s || !e) return alert("Choose an interval.");
-      const b = calculateFinancialMatrix(s, e); let cC = "data:text/csv;charset=utf-8,Player Email,Session Date,Fee Expense Type,Calculated Cost Allocation,Shuttlecock Tube Buyer
-";
-      for (const [uid, r] of Object.entries(b)) { r.records.forEach(rec => { cC += `"${r.email}","${rec.date}","${rec.type}",${rec.cost.toFixed(2)},"${rec.buyer}"
-`; }); }
+      const b = calculateFinancialMatrix(s, e); let cC = "data:text/csv;charset=utf-8,Player Email,Session Date,Fee Expense Type,Calculated Cost Allocation,Shuttlecock Tube Buyer\n";
+      for (const [uid, r] of Object.entries(b)) { r.records.forEach(rec => { cC += `"${r.email}","${rec.date}","${rec.type}",${rec.cost.toFixed(2)},"${rec.buyer}"\n`; }); }
       const eU = encodeURI(cC), l = document.createElement("a"); l.setAttribute("href", eU); l.setAttribute("download", `badminton-ledger-${s}-to-${e}.csv`); document.body.appendChild(l); l.click(); document.body.removeChild(l);
     }
   </script>
