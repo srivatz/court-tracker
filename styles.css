@@ -1,0 +1,46 @@
+:root {
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --brand-accent: #0284c7;
+  --brand-dark: #0369a1;
+  --border-subtle: #e2e8f0;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-app: #0f172a;
+    --bg-surface: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --brand-accent: #38bdf8;
+    --brand-dark: #0ea5e9;
+    --border-subtle: #334155;
+  }
+}
+
+* { box-sizing: border-box; transition: all 0.2s ease-in-out; }
+body { margin: 0; background: var(--bg-app); color: var(--text-main); font-family: system-ui, -apple-system, sans-serif; padding: 24px 16px; }
+.portal-container { max-width: 800px; margin: 0 auto; }
+
+.panel-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
+h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 16px; letter-spacing: -0.025em; }
+
+.interactive-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 12px; }
+.calendar-day-node { background: var(--bg-app); border: 1px solid var(--border-subtle); padding: 12px 8px; border-radius: var(--radius-md); text-align: center; cursor: pointer; position: relative; }
+.calendar-day-node.active-session { border-left: 4px solid var(--brand-accent); background: linear-gradient(135deg, var(--bg-surface), var(--bg-app)); }
+
+.pill-badge { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+.pill-badge.status-joined { background: rgba(22, 163, 74, 0.1); color: var(--color-success); }
+.pill-badge.status-absent { background: rgba(100, 116, 139, 0.1); color: var(--text-muted); }
+
+input, select { width: 100%; padding: 10px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-app); color: var(--text-main); font-size: 0.95rem; }
+input:focus { outline: 2px solid var(--brand-accent); }
+button { width: 100%; background: var(--brand-accent); color: #fff; border: none; padding: 11px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; }
+button:hover { background: var(--brand-dark); }
+button.secondary-action { background: transparent; color: var(--text-main); border: 1px solid var(--border-subtle); }
