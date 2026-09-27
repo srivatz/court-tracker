@@ -6,78 +6,38 @@
   <title>Badminton Court Portal</title>
   <style>
     :root {
-      --bg-app: #0f172a;
-      --bg-surface: #1e293b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --brand-accent: #38bdf8;
-      --brand-dark: #0ea5e9;
-      --border-subtle: #334155;
-      --color-success: #22c55e;
-      --color-danger: #ef4444;
-      --radius-lg: 16px;
-      --radius-md: 10px;
+      --bg-app: #0f172a; --bg-surface: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8;
+      --brand-accent: #38bdf8; --brand-dark: #0ea5e9; --border-subtle: #334155;
+      --color-success: #22c55e; --color-danger: #ef4444; --radius-lg: 16px; --radius-md: 10px;
     }
-
-    body {
-      margin: 0;
-      background-color: var(--bg-app);
-      color: var(--text-main);
-      font-family: system-ui, -apple-system, sans-serif;
-      padding: 16px 12px;
-      position: relative;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=1470&auto=format&fit=crop'); 
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.04;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .portal-container { max-width: 680px; margin: 0 auto; width: 100%; }
-    .panel-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
-    
-    h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 12px; color: var(--brand-accent); display: flex; align-items: center; gap: 8px; }
-    .sub { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 14px; line-height: 1.4; }
-    
-    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    body { margin: 0; background-color: var(--bg-app); color: var(--text-main); font-family: system-ui, sans-serif; padding: 12px 8px; position: relative; min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=1470'); background-size: cover; background-position: center; opacity: 0.04; z-index: -1; pointer-events: none; }
+    .portal-container { max-width: 650px; margin: 0 auto; width: 100%; }
+    .panel-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+    h2 { font-size: 1.1rem; font-weight: 700; margin: 0 0 10px; color: var(--brand-accent); display: flex; align-items: center; gap: 6px; }
+    .sub { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; line-height: 1.4; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
     .tab { flex: 1; text-align: center; padding: 10px; border-radius: var(--radius-md); cursor: pointer; background: var(--bg-surface); border: 1px solid var(--border-subtle); font-size: 0.85rem; font-weight: 600; }
     .tab.active { background: var(--brand-accent); color: var(--bg-app); border-color: var(--brand-accent); }
-
-    .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: rgba(15, 23, 42, 0.5); padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
-    .interactive-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
-    .calendar-header-cell { text-align: center; font-size: 0.7rem; font-weight: 700; color: var(--brand-accent); text-transform: uppercase; padding-bottom: 4px; }
-    
-    .calendar-day-node { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); padding: 8px 4px; border-radius: var(--radius-md); text-align: center; cursor: pointer; min-height: 58px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-sizing: border-box; }
+    .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: rgba(15, 23, 42, 0.5); padding: 6px 10px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+    .interactive-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 8px; }
+    .calendar-header-cell { text-align: center; font-size: 0.65rem; font-weight: 700; color: var(--brand-accent); text-transform: uppercase; padding-bottom: 2px; }
+    .calendar-day-node { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); padding: 6px 2px; border-radius: var(--radius-md); text-align: center; cursor: pointer; min-height: 52px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-sizing: border-box; }
     .calendar-day-node.active-session { border: 1.5px solid var(--brand-accent); background: rgba(30, 41, 59, 0.9); }
-
-    .pill-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 9999px; font-size: 0.62rem; font-weight: 700; text-align: center; line-height: 1; }
+    .pill-badge { display: inline-flex; align-items: center; padding: 1px 4px; border-radius: 9999px; font-size: 0.55rem; font-weight: 700; }
     .pill-badge.status-joined { background: rgba(34, 197, 94, 0.15); color: var(--color-success); border: 1px solid var(--color-success); }
     .pill-badge.status-absent { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); border: 1px solid var(--color-danger); }
-
     .password-input-container { position: relative; display: flex; align-items: center; width: 100%; margin-bottom: 12px; }
     .password-input-container input { width: 100%; padding: 11px; padding-right: 40px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.9rem; margin-bottom: 0; box-sizing: border-box; }
-    .password-toggle-trigger { position: absolute; right: 12px; background: none; border: none; color: var(--brand-accent); width: auto; padding: 0; cursor: pointer; display: flex; align-items: center; height: 100%; justify-content: center; }
-    
+    .password-toggle-trigger { position: absolute; right: 12px; background: none; border: none; color: var(--brand-accent); cursor: pointer; display: flex; align-items: center; height: 100%; z-index: 10; }
     input, select { width: 100%; padding: 11px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.9rem; margin-bottom: 12px; box-sizing: border-box; }
     button { background: var(--brand-accent); color: var(--bg-app); border: none; padding: 11px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; width: 100%; font-size: 0.9rem; }
     button:hover { background: var(--brand-dark); }
     button.small { padding: 4px 8px; font-size: 0.75rem; width: auto; }
     button.secondary-action { background: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border-subtle); }
-
     .ledger-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-subtle); }
     .ledger-row:last-child { border-bottom: none; }
-    .toggle-row { display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.3); padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 6px; font-size: 0.82rem; }
-
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.3); padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 6px; font-size: 0.8rem; }
     .switch-widget { position: relative; display: inline-block; width: 42px; height: 22px; }
     .switch-widget input { opacity: 0; width: 0; height: 0; margin: 0; }
     .slider-knob { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-subtle); transition: .2s; border-radius: 34px; }
@@ -86,23 +46,21 @@
     input:checked + .slider-knob:before { transform: translateX(20px); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
-
   <div class="portal-container">
-    
     <div id="authWrap" class="panel-card" style="max-width: 400px; margin: 40px auto;">
       <h2 id="authTitle">🏸 Court Tracker Sign In</h2>
       <div class="sub" id="authSubText">Enter credentials to log in or submit an activation request.</div>
-      
       <div class="tabs">
         <div class="tab active" id="loginTabBtn" onclick="showAuthTab('login')">Sign In</div>
         <div class="tab" id="registerTabBtn" onclick="showAuthTab('register')">Register</div>
       </div>
-
       <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Email Address</label>
       <input type="email" id="authEmail" placeholder="player@domain.com">
-      
       <label style="font-size:0.75rem; display:block; margin-bottom:4px; font-weight:600;">Password</label>
       <div class="password-input-container">
         <input type="password" id="authPassword" placeholder="••••••••">
@@ -110,27 +68,20 @@
           <i data-lucide="eye" id="eyeIcon" style="width:18px; height:18px;"></i>
         </button>
       </div>
-      
       <button id="authSubmitActionBtn" onclick="submitAuth()">Sign In</button>
     </div>
-
     <div id="appWrap" style="display:none;">
       <div id="adminBar" class="panel-card" style="display:none; border:2px solid var(--brand-accent);"></div>
-
       <div class="panel-card">
         <h2>🗓️ Sessions Tracker Picker</h2>
         <div class="sub">Tap highlighted calendar slots to claim attendance flags.</div>
         <div id="calendarDisplayGrid" class="interactive-calendar"></div>
       </div>
-
       <div class="panel-card">
         <h2>📦 Shuttlecock Supplies Track</h2>
         <div class="sub">Add stock batches. Calculations spread costs automatically across player sessions falling in range.</div>
         <div id="adminShuttleCard" style="display:none; margin-bottom:12px; border-bottom:1px dashed var(--border-subtle); padding-bottom:12px;">
-          <div style="display:flex; gap:8px;">
-            <input type="date" id="sStart">
-            <input type="date" id="sEnd">
-          </div>
+          <div style="display:flex; gap:8px;"><input type="date" id="sStart"><input type="date" id="sEnd"></div>
           <input type="text" id="sBuyer" placeholder="Purchaser Name (e.g., Lin Dan)" style="margin-top:4px;">
           <div style="display:flex; gap:8px; margin-top:4px;">
             <input type="number" id="sCost" placeholder="Total Price" style="margin-bottom:0;">
@@ -139,318 +90,149 @@
         </div>
         <div id="shuttleListSummary" style="font-size:0.8rem; color:var(--text-muted);">No recorded batches.</div>
       </div>
-
       <div id="adminLedgerPanel" class="panel-card" style="display:none; border-left:4px solid var(--color-success);">
         <h2>💰 Personal Ledger and Cost Splits Summary</h2>
         <div class="sub">Admin restricted workspace. Access parameters to compute court divisions and export csv files.</div>
-        
         <div style="background: rgba(15,23,42,0.4); padding: 12px; border-radius: var(--radius-md); border:1px solid var(--border-subtle); margin-bottom:14px;">
           <b style="font-size:0.8rem; display:block; margin-bottom:6px; color:var(--brand-accent);">Export Financial Statement Report:</b>
-          <div style="display:flex; gap:8px; margin-bottom:8px;">
-            <input type="date" id="csvStart" style="margin-bottom:0; font-size:0.8rem; padding:8px;">
-            <input type="date" id="csvEnd" style="margin-bottom:0; font-size:0.8rem; padding:8px;">
-          </div>
-          <button class="secondary-action small" onclick="exportCalculatedLedgerToCSV()" style="width:100%;">Generate CSV Statement Report</button>
+          <div style="display:flex; gap:8px; margin-bottom:8px;"><input type="date" id="csvStart" style="font-size:0.8rem; padding:8px;"><input type="date" id="csvEnd" style="font-size:0.8rem; padding:8px;"></div>
+          <button class="secondary-action small" onclick="exportCalculatedLedgerToCSV()" style="width:100%;">Generate CSV Report</button>
         </div>
-        
         <div id="ledgerSummaryContainer">Processing global distributions...</div>
       </div>
-      
       <button class="secondary-action" onclick="window.auth.signOut()" style="margin-top:10px; margin-bottom:40px;">Disconnect Session</button>
     </div>
   </div>
-
   <script>
-  const firebaseConfig = {
-      apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4",
-      authDomain: "badminton-booking-b2c4d.firebaseapp.com",
-      projectId: "badminton-booking-b2c4d",
-      storageBucket: "badminton-booking-b2c4d.firebasestorage.app",
-      messagingSenderId: "127883683538",
-      appId: "1:127883683538:web:54d610d66536bed3e46f0b"
+    const firebaseConfig = {
+          apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4",
+          authDomain: "badminton-booking-b2c4d.firebaseapp.com",
+          projectId: "badminton-booking-b2c4d",
+          storageBucket: "badminton-booking-b2c4d.firebasestorage.app",
+          messagingSenderId: "127883683538",
+          appId: "1:127883683538:web:54d610d66536bed3e46f0b"
     };
-    firebase.initializeApp(firebaseConfig);
-    window.db = firebase.firestore();
-    window.auth = firebase.auth();
-
-    window.appState = {
-      currentUser: null,
-      currentUserData: { isAdmin: false, approved: false },
-      cachedSessions: [],
-      cachedShuttles: [],
-      cachedUsers: [],
-      currentMonth: new Date().getMonth(),
-      currentYear: new Date().getFullYear(),
-      authMode: 'login'
-    };
-
+    firebase.initializeApp(firebaseConfig); window.db = firebase.firestore(); window.auth = firebase.auth();
+    window.appState = { currentUser: null, currentUserData: { isAdmin: false, approved: false }, cachedSessions: [], cachedShuttles: [], cachedUsers: [], currentMonth: new Date().getMonth(), currentYear: new Date().getFullYear(), authMode: 'login' };
     lucide.createIcons();
-
-    function showAuthTab(mode) {
-      window.appState.authMode = mode;
-      const loginTab = document.getElementById('loginTabBtn');
-      const registerTab = document.getElementById('registerTabBtn');
-      const title = document.getElementById('authTitle');
-      const subText = document.getElementById('authSubText');
-      const actionBtn = document.getElementById('authSubmitActionBtn');
-      
-      if (mode === 'login') {
-        loginTab.classList.add('active'); registerTab.classList.remove('active');
-        title.innerText = "🏸 Court Tracker Sign In"; subText.innerText = "Enter credentials to log in."; actionBtn.innerText = "Sign In";
-      } else {
-        registerTab.classList.add('active'); loginTab.classList.remove('active');
-        title.innerText = "🏸 Create Portal Account"; subText.innerText = "Sign up to request group access from the admin."; actionBtn.innerText = "Submit Request";
-      }
+    function showAuthTab(m) {
+      window.appState.authMode = m; const lTab = document.getElementById('loginTabBtn'), rTab = document.getElementById('registerTabBtn'), t = document.getElementById('authTitle'), s = document.getElementById('authSubText'), a = document.getElementById('authSubmitActionBtn');
+      if (m === 'login') { lTab.classList.add('active'); rTab.classList.remove('active'); t.innerText = "🏸 Court Tracker Sign In"; s.innerText = "Enter credentials to log in."; a.innerText = "Sign In"; }
+      else { rTab.classList.add('active'); lTab.classList.remove('active'); t.innerText = "🏸 Create Portal Account"; s.innerText = "Sign up to request group access."; a.innerText = "Submit Request"; }
     }
-
     function togglePasswordVisibility() {
-      const passInput = document.getElementById('authPassword');
-      const icon = document.getElementById('eyeIcon');
-      if (passInput.type === 'password') {
-        passInput.type = 'text';
-        icon.setAttribute('data-lucide', 'eye-off');
-      } else {
-        passInput.type = 'password';
-        icon.setAttribute('data-lucide', 'eye');
-      }
+      const p = document.getElementById('authPassword'), i = document.getElementById('eyeIcon');
+      if (p.type === 'password') { p.type = 'text'; i.setAttribute('data-lucide', 'eye-off'); } else { p.type = 'password'; i.setAttribute('data-lucide', 'eye'); }
       lucide.createIcons();
     }
-
     function submitAuth() {
-      const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value;
-      if (!email || !password) return alert("Fill fields.");
-
-      if (window.appState.authMode === 'login') {
-        window.auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
-      } else {
-        window.auth.createUserWithEmailAndPassword(email, password)
-          .then(cred => {
-            return window.db.collection('users').doc(cred.user.uid).set({
-              email: email, approved: false, isAdmin: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-          })
-          .then(() => { alert("Requested! Notify admins."); window.auth.signOut(); showAuthTab('login'); })
-          .catch(err => alert(err.message));
-      }
+      const e = document.getElementById('authEmail').value.trim(), p = document.getElementById('authPassword').value; if (!e || !p) return alert("Fill fields.");
+      if (window.appState.authMode === 'login') { window.auth.signInWithEmailAndPassword(e, p).catch(err => alert(err.message)); }
+      else { window.auth.createUserWithEmailAndPassword(e, p).then(c => { return window.db.collection('users').doc(c.user.uid).set({ email: e, approved: false, isAdmin: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }); }).then(() => { alert("Requested! Notify admins."); window.auth.signOut(); showAuthTab('login'); }).catch(err => alert(err.message)); }
     }
-
-    window.auth.onAuthStateChanged(user => {
-      const authWrap = document.getElementById('authWrap');
-      const appWrap = document.getElementById('appWrap');
-      const adminBar = document.getElementById('adminBar');
-      const shuttleCard = document.getElementById('adminShuttleCard');
-      const ledgerPanel = document.getElementById('adminLedgerPanel');
-
-      if (user) {
-        window.db.collection('users').doc(user.uid).get().then(doc => {
-          if (doc.exists && doc.data().approved === true) {
-            window.appState.currentUser = user;
-            window.appState.currentUserData = doc.data();
-            authWrap.style.display = 'none'; appWrap.style.display = 'block';
-
-            if (doc.data().isAdmin === true) {
-              adminBar.style.display = 'block'; shuttleCard.style.display = 'block'; ledgerPanel.style.display = 'block';
-              startAdminListeners();
-            } else {
-              adminBar.style.display = 'none'; shuttleCard.style.display = 'none'; ledgerPanel.style.display = 'none';
-            }
+    window.auth.onAuthStateChanged(u => {
+      const aW = document.getElementById('authWrap'), apW = document.getElementById('appWrap'), aB = document.getElementById('adminBar'), sC = document.getElementById('adminShuttleCard'), lP = document.getElementById('adminLedgerPanel');
+      if (u) {
+        window.db.collection('users').doc(u.uid).get().then(d => {
+          if (d.exists && d.data().approved === true) {
+            window.appState.currentUser = u; window.appState.currentUserData = d.data(); aW.style.display = 'none'; apW.style.display = 'block';
+            if (d.data().isAdmin === true) { aB.style.display = 'block'; sC.style.display = 'block'; lP.style.display = 'block'; startAdminListeners(); }
+            else { aB.style.display = 'none'; sC.style.display = 'none'; lP.style.display = 'none'; }
             startCoreSyncStreams();
           } else { window.auth.signOut(); alert("Pending validation."); }
-        });
-      } else { authWrap.style.display = 'block'; appWrap.style.display = 'none'; adminBar.style.display = 'none'; }
+        }).catch(() => window.auth.signOut());
+      } else { aW.style.display = 'block'; apW.style.display = 'none'; aB.style.display = 'none'; }
     });
-
     function startCoreSyncStreams() {
-      window.db.collection('sessions').onSnapshot(snap => {
-        window.appState.cachedSessions = []; snap.forEach(doc => window.appState.cachedSessions.push(doc.data()));
-        drawCalendarView(); recomputeFinancials();
+      window.db.collection('sessions').onSnapshot(s => { window.appState.cachedSessions = []; s.forEach(d => window.appState.cachedSessions.push(d.data())); drawCalendarView(); recomputeFinancials(); });
+      window.db.collection('shuttles').onSnapshot(s => {
+        window.appState.cachedShuttles = []; let h = '<h4>Supply Records:</h4>';
+        s.forEach(d => { const i = d.data(); window.appState.cachedShuttles.push(i); h += `<div>📦 [${i.startDate} to ${i.endDate}] — Cost: ₹${i.totalCost} (Buyer: ${i.buyer || 'Unknown'})</div>`; });
+        document.getElementById('shuttleListSummary').innerHTML = s.empty ? 'No recorded batches.' : h; recomputeFinancials();
       });
-      window.db.collection('shuttles').onSnapshot(snap => {
-        window.appState.cachedShuttles = [];
-        let html = '<h4>Supply Records:</h4>';
-        snap.forEach(doc => {
-          const item = doc.data(); window.appState.cachedShuttles.push(item);
-          html += `<div>📦 [${item.startDate} to ${item.endDate}] — Cost: ₹${item.totalCost} (Buyer: ${item.buyer || 'Unknown'})</div>`;
-        });
-        document.getElementById('shuttleListSummary').innerHTML = snap.empty ? 'No recorded batches.' : html;
-        recomputeFinancials();
-      });
-      window.db.collection('users').onSnapshot(snap => {
-        window.appState.cachedUsers = []; snap.forEach(doc => window.appState.cachedUsers.push({ uid: doc.id, ...doc.data() }));
-        recomputeFinancials();
-      });
+      window.db.collection('users').onSnapshot(s => { window.appState.cachedUsers = []; s.forEach(d => window.appState.cachedUsers.push({ uid: d.id, ...d.data() })); recomputeFinancials(); });
     }
-
     function startAdminListeners() {
-      window.db.collection('users').onSnapshot(snap => {
-        let pendingHtml = '<b>👑 Open Approvals Queue:</b>';
-        let promoteHtml = '<b style="display:block; margin-top:14px;">👑 Active Group Directory Roles:</b>';
-        let hasPending = false;
-
-        snap.forEach(doc => {
-          const u = doc.data();
-          if (u.approved === false) {
-            hasPending = true;
-            pendingHtml += `<div class="toggle-row"><span>${u.email}</span><button class="small" onclick="adminToggleField('${doc.id}','approved',true)">Approve</button></div>`;
-          } else {
-            promoteHtml += `
-              <div class="toggle-row">
-                <span>${u.email}</span>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span style="font-size:0.7rem; color:var(--brand-accent); font-weight:bold;">${u.isAdmin ? 'Admin' : 'Player'}</span>
-                  <label class="switch-widget">
-                    <input type="checkbox" ${u.isAdmin ? 'checked' : ''} onchange="adminToggleField('${doc.id}','isAdmin',this.checked)">
-                    <span class="slider-knob"></span>
-                  </label>
-                </div>
-              </div>`;
-          }
+      window.db.collection('users').onSnapshot(s => {
+        let pHtml = '<b>👑 Open Approvals Queue:</b>', prHtml = '<b style="display:block; margin-top:14px;">👑 Active Group Directory Roles:</b>', hP = false;
+        s.forEach(d => {
+          const u = d.data();
+          if (u.approved === false) { hP = true; pHtml += `<div class="toggle-row"><span>${u.email}</span><button class="small" onclick="adminToggleField('${d.id}','approved',true)">Approve</button></div>`; }
+          else { prHtml += `<div class="toggle-row"><span>${u.email}</span><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:0.7rem; color:var(--brand-accent); font-weight:bold;">${u.isAdmin ? 'Admin' : 'Player'}</span><label class="switch-widget"><input type="checkbox" ${u.isAdmin ? 'checked' : ''} onchange="adminToggleField('${d.id}','isAdmin',this.checked)"><span class="slider-knob"></span></label></div></div>`; }
         });
-        document.getElementById('adminBar').innerHTML = `${hasPending ? pendingHtml : '<span>✨ Access registers cleared.</span>'}${promoteHtml}`;
+        document.getElementById('adminBar').innerHTML = `${hP ? pHtml : '<span></span>'} ${prHtml}`;
       });
     }
-
-    function adminToggleField(id, field, value) { window.db.collection('users').doc(id).update({ [field]: value }); }
-
+    function adminToggleField(i, f, v) { window.db.collection('users').doc(i).update({ [f]: v }); }
     function submitShuttlePurchase() {
-      const start = document.getElementById('sStart').value;
-      const end = document.getElementById('sEnd').value;
-      const cost = parseFloat(document.getElementById('sCost').value);
-      const buyer = document.getElementById('sBuyer').value.trim() || 'Unknown';
-      if (!start || !end || !cost) return alert("Invalid params.");
-      window.db.collection('shuttles').add({ startDate: start, endDate: end, totalCost: cost, buyer: buyer });
-      alert("Saved.");
+      const s = document.getElementById('sStart').value, e = document.getElementById('sEnd').value, c = parseFloat(document.getElementById('sCost').value), b = document.getElementById('sBuyer').value.trim() || 'Unknown';
+      if (!s || !e || !c) return alert("Invalid params.");
+      window.db.collection('shuttles').add({ startDate: s, endDate: e, totalCost: c, buyer: b }); alert("Saved.");
     }
-
-    function navigateMonth(direction) {
-      window.appState.currentMonth += direction;
-      if (window.appState.currentMonth > 11) { window.appState.currentMonth = 0; window.appState.currentYear += 1; }
-      else if (window.appState.currentMonth < 0) { window.appState.currentMonth = 11; window.appState.currentYear -= 1; }
+    function navigateMonth(d) {
+      window.appState.currentMonth += d;
+      if (window.appState.currentMonth > 11) { window.appState.currentMonth = 0; window.appState.currentYear += 1; } else if (window.appState.currentMonth < 0) { window.appState.currentMonth = 11; window.appState.currentYear -= 1; }
       drawCalendarView();
     }
-
     function drawCalendarView() {
-      const { currentMonth, currentYear, cachedSessions } = window.appState;
-      const grid = document.getElementById('calendarDisplayGrid');
-      
+      const { currentMonth: cM, currentYear: cY, cachedSessions: cS } = window.appState, g = document.getElementById('calendarDisplayGrid');
       if (!document.getElementById('calHeaderTitle')) {
-        const wrapperCard = grid.parentElement; const ctrlBar = document.createElement('div'); ctrlBar.className = 'calendar-controls';
-        ctrlBar.innerHTML = `<button class="secondary-action small" onclick="navigateMonth(-1)" style="width:auto;">◀</button><b id="calHeaderTitle"></b><button class="secondary-action small" onclick="navigateMonth(1)" style="width:auto;">▶</button>`;
-        wrapperCard.insertBefore(ctrlBar, grid);
+        const wC = g.parentElement, cB = document.createElement('div'); cB.className = 'calendar-controls';
+        cB.innerHTML = `<button class="secondary-action small" onclick="navigateMonth(-1)">◀</button><b id="calHeaderTitle"></b><button class="secondary-action small" onclick="navigateMonth(1)">▶</button>`; wC.insertBefore(cB, g);
       }
-
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      document.getElementById('calHeaderTitle').innerText = `${monthNames[currentMonth]} ${currentYear}`; grid.innerHTML = '';
-      ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => grid.innerHTML += `<div class="calendar-header-cell" style="font-size:0.65rem;">${d}</div>`);
-
-      const offset = new Date(currentYear, currentMonth, 1).getDay();
-      const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-      for (let i = 0; i < offset; i++) grid.innerHTML += '<div></div>';
-
-      for (let day = 1; day <= totalDays; day++) {
-        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const match = cachedSessions.find(s => s.date === dateStr); const cell = document.createElement('div'); cell.className = 'calendar-day-node';
+      const mNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      document.getElementById('calHeaderTitle').innerText = `${mNames[cM]} ${cY}`; g.innerHTML = '';
+      ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => g.innerHTML += `<div class="calendar-header-cell" style="font-size:0.65rem;">${d}</div>`);
+      const offset = new Date(cY, cM, 1).getDay(), tDays = new Date(cY, cM + 1, 0).getDate();
+      for (let i = 0; i < offset; i++) g.innerHTML += '<div></div>';
+      for (let day = 1; day <= tDays; day++) {
+        const dStr = `${cY}-${String(cM + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`, match = cS.find(s => s.date === dStr), cell = document.createElement('div'); cell.className = 'calendar-day-node';
         cell.innerHTML = `<div style="font-weight:700; font-size:0.8rem; width:100%; text-align:left;">${day}</div>`;
-
         if (match) {
           cell.classList.add('active-session'); const playing = (match.players || []).includes(window.auth.currentUser.uid);
           cell.innerHTML += `<span class="pill-badge ${playing ? 'status-joined' : 'status-absent'}" style="font-size:0.55rem; padding:1px 4px;">${playing ? '🎟️' : '✕'}</span>`;
-          cell.onclick = () => {
-            const uid = window.auth.currentUser.uid; const plist = match.players || [];
-            window.db.collection('sessions').doc(dateStr).update({ players: plist.includes(uid) ? plist.filter(x => x !== uid) : [...plist, uid] });
-          };
+          cell.onclick = () => { const uid = window.auth.currentUser.uid, pL = match.players || []; window.db.collection('sessions').doc(dStr).update({ players: pL.includes(uid) ? pL.filter(x => x !== uid) : [...pL, uid] }); };
         } else if (window.appState.currentUserData.isAdmin) {
           cell.style.borderStyle = 'dashed'; cell.style.opacity = '0.4';
-          cell.onclick = () => {
-            const fee = prompt(`Configure cost for [${dateStr}]:`, "600");
-            if (fee) window.db.collection('sessions').doc(dateStr).set({ date: dateStr, cost: parseFloat(fee) || 600, players: [] });
-          };
+          cell.onclick = () => { const fee = prompt(`Configure cost for [${dStr}]:`, "600"); if (fee) window.db.collection('sessions').doc(dStr).set({ date: dStr, cost: parseFloat(fee) || 600, players: [] }); };
         }
-        grid.appendChild(cell);
+        g.appendChild(cell);
       }
     }
-
-    function calculateFinancialMatrix(filterStart = null, filterEnd = null) {
-      const { cachedSessions, cachedShuttles, cachedUsers } = window.appState;
-      const individualBalances = {};
-      cachedUsers.forEach(u => individualBalances[u.uid] = { email: u.email, courtShare: 0, shuttleShare: 0, totalVisits: 0, records: [] });
-
-      cachedSessions.forEach(session => {
-        if (filterStart && (session.date < filterStart || session.date > filterEnd)) return;
-        const dayAttendees = session.players || [];
-        if (dayAttendees.length > 0) {
-          const splitShare = session.cost / dayAttendees.length;
-          dayAttendees.forEach(pid => {
-            if (individualBalances[pid]) {
-              individualBalances[pid].courtShare += splitShare; individualBalances[pid].totalVisits += 1;
-              individualBalances[pid].records.push({ date: session.date, type: 'Court Fee', cost: splitShare, buyer: 'N/A' });
-            }
+    function calculateFinancialMatrix(fStart = null, fEnd = null) {
+      const { cachedSessions: cS, cachedShuttles: cSh, cachedUsers: cU } = window.appState, iB = {}; cU.forEach(u => iB[u.uid] = { email: u.email, courtShare: 0, shuttleShare: 0, totalVisits: 0, records: [] });
+      cS.forEach(s => {
+        if (fStart && (s.date < fStart || s.date > fEnd)) return; const dA = s.players || [];
+        if (dA.length > 0) { const sS = s.cost / dA.length; dA.forEach(pid => { if (iB[pid]) { iB[pid].courtShare += sS; iB[pid].totalVisits += 1; iB[pid].records.push({ date: s.date, type: 'Court Fee', cost: sS, buyer: 'N/A' }); } }); }
+      });
+      cSh.forEach(sh => {
+        const mS = cS.filter(s => s.date >= sh.startDate && s.date <= sh.endDate); if (fStart) { const f = mS.filter(s => s.date >= fStart && s.date <= fEnd); if (!f.length) return; }
+        const tV = mS.reduce((sum, s) => sum + (s.players || []).length, 0);
+        if (tV > 0) {
+          const uC = sh.totalCost / tV; mS.forEach(s => {
+            if (fStart && (s.date < fStart || s.date > fEnd)) return;
+            (s.players || []).forEach(pid => { if (iB[pid]) { iB[pid].shuttleShare += uC; iB[pid].records.push({ date: s.date, type: 'Shuttlecock', cost: uC, buyer: sh.buyer || 'Unknown' }); } });
           });
         }
       });
-
-      cachedShuttles.forEach(shuttle => {
-        const matchingSessionsInWindow = cachedSessions.filter(s => s.date >= shuttle.startDate && s.date <= shuttle.endDate);
-        if (filterStart) {
-          const filtered = matchingSessionsInWindow.filter(s => s.date >= filterStart && s.date <= filterEnd);
-          if (!filtered.length) return;
-        }
-        const totalVisitsInPeriod = matchingSessionsInWindow.reduce((sum, s) => sum + (s.players || []).length, 0);
-        if (totalVisitsInPeriod > 0) {
-          const shuttleUnitCostPerVisit = shuttle.totalCost / totalVisitsInPeriod;
-          matchingSessionsInWindow.forEach(s => {
-            if (filterStart && (s.date < filterStart || s.date > filterEnd)) return;
-            (s.players || []).forEach(pid => {
-              if (individualBalances[pid]) {
-                individualBalances[pid].shuttleShare += shuttleUnitCostPerVisit;
-                individualBalances[pid].records.push({ date: s.date, type: 'Shuttlecock', cost: shuttleUnitCostPerVisit, buyer: shuttle.buyer || 'Unknown' });
-              }
-            });
-          });
-        }
-      });
-
-      return individualBalances;
+      return iB;
     }
-
     function recomputeFinancials() {
-      if (window.appState.currentUserData.isAdmin !== true) return;
-      const individualBalances = calculateFinancialMatrix();
-      let ledgerHtml = '<div style="background:rgba(15,23,42,0.4); border-radius:var(--radius-md); overflow:hidden;">';
-      for (const [uid, record] of Object.entries(individualBalances)) {
-        const combinedBill = record.courtShare + record.shuttleShare;
-        ledgerHtml += `
-          <div class="ledger-row">
-            <div>
-              <div style="font-weight:600; font-size:0.85rem;">${record.email}</div>
-              <div style="font-size:0.72rem; color:var(--text-muted)">Visits: ${record.totalVisits} | Court: ₹${record.courtShare.toFixed(1)} | Shuttle: ₹${record.shuttleShare.toFixed(1)}</div>
-            </div>
-            <div style="font-weight:700; color:var(--brand-accent); font-size:0.95rem;">₹${combinedBill.toFixed(1)}</div>
-          </div>`;
+      if (window.appState.currentUserData.isAdmin !== true) return; const iB = calculateFinancialMatrix();
+      let lHtml = '<div style="background:rgba(15,23,42,0.4); border-radius:var(--radius-md); overflow:hidden;">';
+      for (const [uid, r] of Object.entries(iB)) {
+        const cB = r.courtShare + r.shuttleShare;
+        lHtml += `<div class="ledger-row"><div><div style="font-weight:600; font-size:0.85rem;">${r.email}</div><div style="font-size:0.72rem; color:var(--text-muted)">Visits: ${r.totalVisits} | Court: ₹${r.courtShare.toFixed(1)} | Shuttle: ₹${r.shuttleShare.toFixed(1)}</div></div><div style="font-weight:700; color:var(--brand-accent); font-size:0.95rem;">₹${cB.toFixed(1)}</div></div>`;
       }
-      document.getElementById('ledgerSummaryContainer').innerHTML = ledgerHtml + '</div>';
+      document.getElementById('ledgerSummaryContainer').innerHTML = lHtml + '</div>';
     }
-
     function exportCalculatedLedgerToCSV() {
-      const start = document.getElementById('csvStart').value; const end = document.getElementById('csvEnd').value;
-      if (!start || !end) return alert("Choose a timeline interval window range.");
-      const balances = calculateFinancialMatrix(start, end);
-
-      let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Player Email,Session Date,Fee Expense Type,Calculated Cost Allocation,Shuttlecock Tube Buyer
+      const s = document.getElementById('csvStart').value, e = document.getElementById('csvEnd').value; if (!s || !e) return alert("Choose an interval.");
+      const b = calculateFinancialMatrix(s, e); let cC = "data:text/csv;charset=utf-8,Player Email,Session Date,Fee Expense Type,Calculated Cost Allocation,Shuttlecock Tube Buyer
 ";
-
-      for (const [uid, record] of Object.entries(balances)) {
-        record.records.forEach(r => {
-          csvContent += `"${record.email}","${r.date}","${r.type}",${r.cost.toFixed(2)},"${r.buyer}"
-`;
-        });
-      }
-
-      const encodedUri = encodeURI(csvContent); const link = document.createElement("a");
-      link.setAttribute("href", encodedUri); link.setAttribute("download", `badminton-ledger-${start}-to-${end}.csv`);
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      for (const [uid, r] of Object.entries(b)) { r.records.forEach(rec => { cC += `"${r.email}","${rec.date}","${rec.type}",${rec.cost.toFixed(2)},"${rec.buyer}"
+`; }); }
+      const eU = encodeURI(cC), l = document.createElement("a"); l.setAttribute("href", eU); l.setAttribute("download", `badminton-ledger-${s}-to-${e}.csv`); document.body.appendChild(l); l.click(); document.body.removeChild(l);
     }
   </script>
 </body>
