@@ -29,16 +29,16 @@
       min-height: 100vh;
     }
 
-    /* Opaque Backdrop displaying legendary athletic indicators (Lin Dan & Lee Chong Wei) */
+    /* Opaque Background Layer displaying a high-action professional badminton match */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('https://unsplash.com'); 
+      background-image: url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=1470&auto=format&fit=crop'); 
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      opacity: 0.05; /* Balanced opacity level to guarantee text accessibility */
+      opacity: 0.05; /* Kept very dim so text elements are fully readable */
       z-index: -1;
       pointer-events: none;
     }
@@ -65,8 +65,11 @@
     .pill-badge.status-joined { background: rgba(34, 197, 94, 0.15); color: var(--color-success); border: 1px solid var(--color-success); }
     .pill-badge.status-absent { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); border: 1px solid var(--color-danger); }
 
-    .password-input-container { position: relative; display: flex; align-items: center; width: 100%; margin-bottom: 16px; }
-    .password-toggle-trigger { position: absolute; right: 12px; background: none; border: none; color: var(--text-muted); font-weight: 600; font-size: 0.82rem; cursor: pointer; }
+    /* Clean, Professional Embedded Password Input Component Layout */
+    .password-input-container { position: relative; display: flex; align-items: center; width: 100%; margin-bottom: 14px; }
+    .password-input-container input { width: 100%; padding: 12px; padding-right: 65px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.95rem; margin-bottom: 0; }
+    .password-toggle-trigger { position: absolute; right: 12px; background: none; border: none; color: var(--brand-accent); font-weight: 700; font-size: 0.82rem; cursor: pointer; height: 100%; display: flex; align-items: center; padding: 0; }
+    .password-toggle-trigger:hover { color: var(--text-main); }
     
     input, select { width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.5); color: var(--text-main); font-size: 0.95rem; margin-bottom: 14px; }
     button { background: var(--brand-accent); color: var(--bg-app); border: none; padding: 12px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; width: 100%; font-size: 0.95rem; }
@@ -88,7 +91,7 @@
 
   <div class="portal-container">
     
-    <!-- 1. AUTHENTICATION SECTION CONTAINER -->
+    <!-- AUTHENTICATION FORM OVERLAY -->
     <div id="authWrap" class="panel-card" style="max-width: 450px; margin: 60px auto;">
       <h2 id="authTitle">🏸 Court Tracker Sign In</h2>
       <div class="sub" id="authSubText">Enter credentials to log in or submit an activation request.</div>
@@ -103,14 +106,14 @@
       
       <label style="font-size:0.8rem; display:block; margin-bottom:4px;">Password</label>
       <div class="password-input-container">
-        <input type="password" id="authPassword" placeholder="••••••••" style="margin-bottom:0;">
+        <input type="password" id="authPassword" placeholder="••••••••">
         <button type="button" class="password-toggle-trigger" id="passToggleBtn" onclick="togglePasswordVisibility()">Show</button>
       </div>
       
-      <button id="authSubmitActionBtn" onclick="submitAuth()">Sign In</button>
+      <button id="authSubmitActionBtn" onclick="submitAuth()" style="margin-top:20px;">Sign In</button>
     </div>
 
-    <!-- 2. PROTECTED INTERFACE OVERLAY -->
+    <!-- MAIN CORE DASHBOARD VIEWS -->
     <div id="appWrap" style="display:none;">
       
       <!-- Administrative Action Panel -->
@@ -152,19 +155,19 @@
     </div>
   </div>
 
-  <!-- CENTRAL BACKEND ROUTING LOGIC ENGINE -->
+  <!-- STABLE SCRIPT LAYER IMPLEMENTATION -->
   <script>
     // 1. Core Firebase Config Injection (Place your actual variables here)
     const firebaseConfig = {
-    apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4",
-    authDomain: "badminton-booking-b2c4d.firebaseapp.com",
-    projectId: "badminton-booking-b2c4d",
-    storageBucket: "badminton-booking-b2c4d.firebasestorage.app",
-    messagingSenderId: "127883683538",
-    appId: "1:127883683538:web:54d610d66536bed3e46f0b"
+     apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4",
+     authDomain: "badminton-booking-b2c4d.firebaseapp.com",
+     projectId: "badminton-booking-b2c4d",
+     storageBucket: "badminton-booking-b2c4d.firebasestorage.app",
+     messagingSenderId: "127883683538",
+     appId: "1:127883683538:web:54d610d66536bed3e46f0b"
     };
 
-    // Initialize References
+    // Initialize Runtime References Instantly
     firebase.initializeApp(firebaseConfig);
     window.db = firebase.firestore();
     window.auth = firebase.auth();
@@ -178,21 +181,317 @@
       cachedUsers: [],
       currentMonth: new Date().getMonth(),
       currentYear: new Date().getFullYear(),
-      authMode: 'login'
+      authMode: 'login' // Standard baseline mode state parameter
     };
 
-    // 2. Authentication UI View Toggles
+    // 2. Authentication Form UI View Toggles
     function showAuthTab(mode) {
       window.appState.authMode = mode;
       const loginTab = document.getElementById('loginTabBtn');
-const registerTab = document.getElementById('registerTabBtn');const title = document.getElementById('authTitle');const subText = document.getElementById('authSubText');const actionBtn = document.getElementById('authSubmitActionBtn');if (mode === 'login') {loginTab.classList.add('active');registerTab.classList.remove('active');title.innerText = "兵 Court Tracker Sign In";subText.innerText = "Enter credentials to log in.";actionBtn.innerText = "Sign In";} else {registerTab.classList.add('active');loginTab.classList.remove('active');title.innerText = "🏸 Create Portal Account";subText.innerText = "Sign up to request group access from the admin.";actionBtn.innerText = "Submit Request";}}function togglePasswordVisibility() {const passInput = document.getElementById('authPassword');const toggleBtn = document.getElementById('passToggleBtn');if (passInput.type === 'password') {passInput.type = 'text';toggleBtn.innerText = 'Hide';} else {passInput.type = 'password';toggleBtn.innerText = 'Show';}}// 3. Form Submission Routingfunction submitAuth() {const email = document.getElementById('authEmail').value.trim();const password = document.getElementById('authPassword').value;if (!email || !password) {alert("Please fill in all layout fields.");return;}if (window.appState.authMode === 'login') {window.auth.signInWithEmailAndPassword(email, password).catch(err => alert("Sign In Blocked: " + err.message));} else {window.auth.createUserWithEmailAndPassword(email, password).then(cred => {return window.db.collection('users').doc(cred.user.uid).set({email: email,approved: false, // Flag defaults to false to allow admin processing loopsisAdmin: false,createdAt: firebase.firestore.FieldValue.serverTimestamp()});}).then(() => {alert("Registration complete! Your profile is pending access verification from the group admins.");window.auth.signOut();showAuthTab('login');}).catch(err => alert("Registration Failed: " + err.message));}}// 4. Global Auth Observer Workflow Hookwindow.auth.onAuthStateChanged(user => {const authWrap = document.getElementById('authWrap');const appWrap = document.getElementById('appWrap');const adminBar = document.getElementById('adminBar');const shuttleCard = document.getElementById('adminShuttleCard');if (user) {window.db.collection('users').doc(user.uid).get().then(doc => {if (doc.exists && doc.data().approved === true) {window.appState.currentUser = user;window.appState.currentUserData = doc.data();authWrap.style.display = 'none';appWrap.style.display = 'block';if (doc.data().isAdmin === true) {adminBar.style.display = 'block';shuttleCard.style.display = 'block';startAdminListeners();} else {adminBar.style.display = 'none';shuttleCard.style.display = 'none';}startCoreSyncStreams();} else {window.auth.signOut();alert("Access Pending: Ask an administrator to approve your portal access account entry.");}});} else {authWrap.style.display = 'block';appWrap.style.display = 'none';adminBar.style.display = 'none';}});// 5. Real-Time Sync Streams Initializationfunction startCoreSyncStreams() {// Stream A: Read Active Match Calendarswindow.db.collection('sessions').onSnapshot(snap => {window.appState.cachedSessions = [];snap.forEach(doc => window.appState.cachedSessions.push(doc.data()));drawCalendarView();recomputeFinancials();});// Stream B: Read Shuttle Stock Updateswindow.db.collection('shuttles').onSnapshot(snap => {window.appState.cachedShuttles = [];let html = 'Active Supply Coverage Records:';snap.forEach(doc => {const item = doc.data();window.appState.cachedShuttles.push(item);html += <div>📦 Window: [${item.startDate} to ${item.endDate}] — Cost: ₹${item.totalCost}</div>;});document.getElementById('shuttleListSummary').innerHTML = snap.empty ? 'No recorded batches.' : html;recomputeFinancials();});// Stream C: Read Core Directory Emailswindow.db.collection('users').onSnapshot(snap => {window.appState.cachedUsers = [];snap.forEach(doc => window.appState.cachedUsers.push({ uid: doc.id, ...doc.data() }));recomputeFinancials();});}// Admin Panels Enginefunction startAdminListeners() {window.db.collection('users').onSnapshot(snap => {let pendingHtml = '👑 Pending Approvals Queue:';let promoteHtml = '👑 Promote Member to Admin Status:';let dynamicPendingCount = 0;let dynamicPromoteCount = 0;snap.forEach(doc => {const u = doc.data();if (u.approved === false) {dynamicPendingCount++;pendingHtml += <div style="margin-top:6px;">${u.email} <button class="small" onclick="adminApproveUser('${doc.id}')">Approve</button></div>;} else if (u.approved === true && u.isAdmin === false) {dynamicPromoteCount++;promoteHtml += <div style="margin-top:6px;">${u.email} <button class="small" onclick="adminPromoteUser('${doc.id}')" style="background:var(--text-muted)">Grant Admin privileges</button></div>;}});document.getElementById('adminBar').innerHTML = ${dynamicPendingCount > 0 ? pendingHtml : '<span>✨ No pending account activation registrations.</span>'} ${dynamicPromoteCount > 0 ? promoteHtml : ''};});}// Admin Functional Interactions Execution Scriptsfunction adminApproveUser(id) { window.db.collection('users').doc(id).update({ approved: true }); }function adminPromoteUser(id) { window.db.collection('users').doc(id).update({ isAdmin: true }); }function submitShuttlePurchase() {const start = document.getElementById('sStart').value;const end = document.getElementById('sEnd').value;const cost = parseFloat(document.getElementById('sCost').value);if (!start || !end || !cost) return alert("Fill in valid inventory ranges.");window.db.collection('shuttles').add({ startDate: start, endDate: end, totalCost: cost });alert("Supply record inserted cleanly.");}// 6. Interactive Month Parsing Enginesfunction navigateMonth(direction) {window.appState.currentMonth += direction;if (window.appState.currentMonth > 11) { window.appState.currentMonth = 0; window.appState.currentYear += 1; }else if (window.appState.currentMonth < 0) { window.appState.currentMonth = 11; window.appState.currentYear -= 1; }drawCalendarView();}function drawCalendarView() {const { currentMonth, currentYear, cachedSessions } = window.appState;const grid = document.getElementById('calendarDisplayGrid');if (!document.getElementById('calHeaderTitle')) {const wrapperCard = grid.parentElement;const ctrlBar = document.createElement('div');ctrlBar.className = 'calendar-controls';ctrlBar.innerHTML = <button class="secondary-action small" onclick="navigateMonth(-1)">◀ Prev</button> <b id="calHeaderTitle" style="color:var(--brand-accent)"></b> <button class="secondary-action small" onclick="navigateMonth(1)">Next ▶</button>;wrapperCard.insertBefore(ctrlBar, grid);}const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];document.getElementById('calHeaderTitle').innerText = ${monthNames[currentMonth]} ${currentYear};grid.innerHTML = '';['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(d => grid.innerHTML += <div class="calendar-header-cell">${d}</div>);const offset = new Date(currentYear, currentMonth, 1).getDay();const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();for (let i = 0; i < offset; i++) grid.innerHTML += '';for (let day = 1; day <= totalDays; day++) {const dateStr = ${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')};const match = cachedSessions.find(s => s.date === dateStr);const cell = document.createElement('div');cell.className = 'calendar-day-node';if (match) {cell.classList.add('active-session');const playing = (match.players || []).includes(window.auth.currentUser.uid);cell.innerHTML = <div style="font-weight:700;">${day}</div> <div style="font-size:0.65rem; color:var(--text-muted)">Court: ${match.cost}</div> <span class="pill-badge ${playing ? 'status-joined' : 'status-absent'}">${playing ? '🎟️ Play' : '✕ Out'}</span>;cell.onclick = () => {const uid = window.auth.currentUser.uid;const plist = match.players || [];const updated = plist.includes(uid) ? plist.filter(x => x !== uid) : [...plist, uid];window.db.collection('sessions').doc(dateStr).update({ players: updated });};} else {cell.innerHTML = <div style="opacity:0.5">${day}</div>;if (window.appState.currentUserData.isAdmin) {cell.style.borderStyle = 'dashed';cell.onclick = () => {const fee = prompt(Configure total court cost for matching day [${dateStr}]:, "600");if (fee) window.db.collection('sessions').doc(dateStr).set({ date: dateStr, cost: parseFloat(fee) || 600, players: [] });};}}grid.appendChild(cell);}}// 7. Core Split Calculations Math Modulefunction recomputeFinancials() {const { cachedSessions, cachedShuttles, cachedUsers } = window.appState;if (!cachedUsers.length) return;const individualBalances = {};cachedUsers.forEach(u => individualBalances[u.uid] = { email: u.email, courtShare: 0, shuttleShare: 0, totalVisits: 0 });// Step A: Distribute Court Fees Per Day SplitcachedSessions.forEach(session => {const dayAttendees = session.players || [];if (dayAttendees.length > 0) {const splitShare = session.cost / dayAttendees.length;dayAttendees.forEach(pid => {if (individualBalances[pid]) {individualBalances[pid].courtShare += splitShare;individualBalances[pid].totalVisits += 1;}});}});// Step B: Evenly Distribute Shuttlecock Price Across Date Coverage WindowscachedShuttles.forEach(shuttle => {// Find total historical player visits logged within this rangeconst matchingSessionsInWindow = cachedSessions.filter(s => s.date >= shuttle.startDate && s.date <= shuttle.endDate);const totalVisitsInPeriod = matchingSessionsInWindow.reduce((sum, s) => sum + (s.players || []).length, 0);if (totalVisitsInPeriod > 0) {const shuttleUnitCostPerVisit = shuttle.totalCost / totalVisitsInPeriod;matchingSessionsInWindow.forEach(s => {(s.players || []).forEach(pid => {if (individualBalances[pid]) {individualBalances[pid].shuttleShare += shuttleUnitCostPerVisit;}});});}});// Step C: Render Output Layout Recordslet ledgerHtml = '';for (const [uid, record] of Object.entries(individualBalances)) {const combinedBill = record.courtShare + record.shuttleShare;ledgerHtml +=  <div class="ledger-row"> <div> <div style="font-weight:600; font-size:0.9rem;">${record.email} ${uid === window.auth.currentUser.uid ? '(You)' : ''}</div> <div style="font-size:0.75rem; color:var(--text-muted)">Visits: ${record.totalVisits} | Court Share: ₹${record.courtShare.toFixed(2)} | Shuttle Share: ₹${record.shuttleShare.toFixed(2)}</div> </div> <div style="font-weight:700; color:var(--brand-accent); font-size:1.05rem;">₹${combinedBill.toFixed(2)}</div> </div>;}ledgerHtml += '';document.getElementById('ledgerSummaryContainer').innerHTML = ledgerHtml;}
-### ⚡ Troubleshooting Execution Workflow
-1. Open this file locally or deploy it to your repository. It will render the login layout immediately without dropping script initialization syntax issues.
-2. Remember to update the **`firebaseConfig` parameters** in the code block with your exact keys from the Firebase console.
-3. Log in with your primary email address. If the database collections refresh smoothly, your admin bar panel and interactive monthly date matrix configurations will load instantly.
+      const registerTab = document.getElementById('registerTabBtn');
+      const title = document.getElementById('authTitle');
+      const subText = document.getElementById('authSubText');
+      const actionBtn = document.getElementById('authSubmitActionBtn');
+      
+      if (mode === 'login') {
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+        title.innerText = "🏸 Court Tracker Sign In";
+        subText.innerText = "Enter credentials to log in.";
+        actionBtn.innerText = "Sign In";
+      } else {
+        registerTab.classList.add('active');
+        loginTab.classList.remove('active');
+        title.innerText = "🏸 Create Portal Account";
+        subText.innerText = "Sign up to request group access from the admin.";
+        actionBtn.innerText = "Submit Request";
+      }
+    }
 
-<FollowUp>
-Once you place this single consolidated file into your environment and connect your keys, let me know:
-* Does the portal layout render on your screen without returning a blank page?
-* If you log in as the admin, can you select empty cells to configure courts or modify costs?
-</FollowUp>
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('authPassword');
+      const toggleBtn = document.getElementById('passToggleBtn');
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        toggleBtn.innerText = 'Hide';
+      } else {
+        passInput.type = 'password';
+        toggleBtn.innerText = 'Show';
+      }
+    }
+
+    // 3. Form Submission Routing (Fully Stabilized Sign-In/Registration Engine)
+    function submitAuth() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+
+      if (!email || !password) {
+        alert("Please fill in all layout fields.");
+        return;
+      }
+
+      if (window.appState.authMode === 'login') {
+        window.auth.signInWithEmailAndPassword(email, password)
+          .catch(err => alert("Sign In Blocked: " + err.message));
+      } else {
+        window.auth.createUserWithEmailAndPassword(email, password)
+          .then(cred => {
+            // Secure Profile Write Routine
+            return window.db.collection('users').doc(cred.user.uid).set({
+              email: email,
+              approved: false, // Flag defaults to false to allow admin processing loops
+              isAdmin: false,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          })
+          .then(() => {
+            alert("Registration complete! Your profile is pending access verification from the group admins.");
+            window.auth.signOut();
+            showAuthTab('login');
+          })
+          .catch(err => alert("Registration Failed: " + err.message));
+      }
+    }
+
+    // 4. Global Auth Observer Loop Hook
+    window.auth.onAuthStateChanged(user => {
+      const authWrap = document.getElementById('authWrap');
+      const appWrap = document.getElementById('appWrap');
+      const adminBar = document.getElementById('adminBar');
+      const shuttleCard = document.getElementById('adminShuttleCard');
+
+      if (user) {
+        window.db.collection('users').doc(user.uid).get()
+          .then(doc => {
+            if (doc.exists && doc.data().approved === true) {
+              window.appState.currentUser = user;
+              window.appState.currentUserData = doc.data();
+
+              authWrap.style.display = 'none';
+              appWrap.style.display = 'block';
+
+              if (doc.data().isAdmin === true) {
+                adminBar.style.display = 'block';
+                shuttleCard.style.display = 'block';
+                startAdminListeners();
+              } else {
+                adminBar.style.display = 'none';
+                shuttleCard.style.display = 'none';
+              }
+
+              startCoreSyncStreams();
+            } else {
+              window.auth.signOut();
+              alert("Access Pending: Ask an administrator to approve your portal access account entry.");
+            }
+          })
+          .catch(err => {
+            console.error("Auth routing failure: ", err);
+            window.auth.signOut();
+          });
+      } else {
+        authWrap.style.display = 'block';
+        appWrap.style.display = 'none';
+        adminBar.style.display = 'none';
+      }
+    });
+
+    // 5. Real-Time Sync Streams Management Modules
+    function startCoreSyncStreams() {
+      // Read Active Match Calendars
+      window.db.collection('sessions').onSnapshot(snap => {
+        window.appState.cachedSessions = [];
+        snap.forEach(doc => window.appState.cachedSessions.push(doc.data()));
+        drawCalendarView();
+        recomputeFinancials();
+      });
+
+      // Read Shuttle Stock Updates
+      window.db.collection('shuttles').onSnapshot(snap => {
+        window.appState.cachedShuttles = [];
+        let html = '<h4>Active Supply Coverage Records:</h4>';
+        snap.forEach(doc => {
+          const item = doc.data();
+          window.appState.cachedShuttles.push(item);
+          html += `<div>📦 Window: [${item.startDate} to ${item.endDate}] — Cost: ₹${item.totalCost}</div>`;
+        });
+        document.getElementById('shuttleListSummary').innerHTML = snap.empty ? 'No recorded batches.' : html;
+        recomputeFinancials();
+      });
+
+      // Read Core Directory Emails
+      window.db.collection('users').onSnapshot(snap => {
+        window.appState.cachedUsers = [];
+        snap.forEach(doc => window.appState.cachedUsers.push({ uid: doc.id, ...doc.data() }));
+        recomputeFinancials();
+      });
+    }
+
+    // Admin Panel Management Engine (Approve & Promote Members workflows)
+    function startAdminListeners() {
+      window.db.collection('users').onSnapshot(snap => {
+        let pendingHtml = '<b>👑 Pending Approvals Queue:</b><br>';
+        let promoteHtml = '<b style="display:block; margin-top:12px;">👑 Promote Member to Admin Status:</b><br>';
+        let dynamicPendingCount = 0;
+        let dynamicPromoteCount = 0;
+
+        snap.forEach(doc => {
+          const u = doc.data();
+          if (u.approved === false) {
+            dynamicPendingCount++;
+            pendingHtml += `<div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center;"><span>${u.email}</span> <button class="small" onclick="adminApproveUser('${doc.id}')">Approve</button></div>`;
+          } else if (u.approved === true && u.isAdmin === false) {
+            dynamicPromoteCount++;
+            promoteHtml += `<div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center;"><span>${u.email}</span> <button class="small" onclick="adminPromoteUser('${doc.id}')" style="background:var(--text-muted)">Grant Admin Privileges</button></div>`;
+          }
+        });
+
+        document.getElementById('adminBar').innerHTML = `
+          <div style="font-size:0.9rem; font-weight:600; color:var(--brand-accent); margin-bottom:10px;">Group Management Suite</div>
+          ${dynamicPendingCount > 0 ? pendingHtml : '<div style="font-size:0.8rem; color:var(--text-muted)">✨ No pending account activation registrations.</div>'}
+          ${dynamicPromoteCount > 0 ? promoteHtml : ''}
+        `;
+      });
+    }
+
+    function adminApproveUser(id) { window.db.collection('users').doc(id).update({ approved: true }); }
+    function adminPromoteUser(id) { window.db.collection('users').doc(id).update({ isAdmin: true }); }
+
+    function submitShuttlePurchase() {
+      const start = document.getElementById('sStart').value;
+      const end = document.getElementById('sEnd').value;
+      const cost = parseFloat(document.getElementById('sCost').value);
+
+      if (!start || !end || !cost) return alert("Fill in valid inventory ranges.");
+
+      window.db.collection('shuttles').add({ startDate: start, endDate: end, totalCost: cost });
+      alert("Supply record inserted cleanly.");
+    }
+
+    // 6. Interactive Month Navigation Grid Builder
+    function navigateMonth(direction) {
+      window.appState.currentMonth += direction;
+      if (window.appState.currentMonth > 11) { window.appState.currentMonth = 0; window.appState.currentYear += 1; }
+      else if (window.appState.currentMonth < 0) { window.appState.currentMonth = 11; window.appState.currentYear -= 1; }
+      drawCalendarView();
+    }
+
+    function drawCalendarView() {
+      const { currentMonth, currentYear, cachedSessions } = window.appState;
+      const grid = document.getElementById('calendarDisplayGrid');
+      
+      if (!document.getElementById('calHeaderTitle')) {
+        const wrapperCard = grid.parentElement;
+        const ctrlBar = document.createElement('div');
+        ctrlBar.className = 'calendar-controls';
+        ctrlBar.innerHTML = `
+          <button class="secondary-action small" onclick="navigateMonth(-1)" style="width:auto;">◀ Prev</button>
+          <b id="calHeaderTitle" style="color:var(--brand-accent)"></b>
+          <button class="secondary-action small" onclick="navigateMonth(1)" style="width:auto;">Next ▶</button>
+        `;
+        wrapperCard.insertBefore(ctrlBar, grid);
+      }
+
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('calHeaderTitle').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+      grid.innerHTML = '';
+
+      ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(d => grid.innerHTML += `<div class="calendar-header-cell">${d}</div>`);
+
+      const offset = new Date(currentYear, currentMonth, 1).getDay();
+      const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+      for (let i = 0; i < offset; i++) grid.innerHTML += '<div></div>';
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const match = cachedSessions.find(s => s.date === dateStr);
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day-node';
+
+        if (match) {
+          cell.classList.add('active-session');
+          const playing = (match.players || []).includes(window.auth.currentUser.uid);
+          cell.innerHTML = `
+            <div style="font-weight:700; width:100%; text-align:left;">${day}</div>
+            <div style="font-size:0.65rem; color:var(--text-muted)">Cost: ₹${match.cost}</div>
+            <span class="pill-badge ${playing ? 'status-joined' : 'status-absent'}">${playing ? '🎟️ Play' : '✕ Out'}</span>
+          `;
+          cell.onclick = () => {
+            const uid = window.auth.currentUser.uid;
+            const plist = match.players || [];
+            const updated = plist.includes(uid) ? plist.filter(x => x !== uid) : [...plist, uid];
+            window.db.collection('sessions').doc(dateStr).update({ players: updated });
+          };
+        } else {
+          cell.innerHTML = `<div style="opacity:0.5; width:100%; text-align:left;">${day}</div>`;
+          if (window.appState.currentUserData.isAdmin) {
+            cell.style.borderStyle = 'dashed';
+            cell.onclick = () => {
+              const fee = prompt(`Configure total court cost for matching day [${dateStr}]:`, "600");
+              if (fee) window.db.collection('sessions').doc(dateStr).set({ date: dateStr, cost: parseFloat(fee) || 600, players: [] });
+            };
+          }
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    // 7. Core Split Calculations Financial Module
+    function recomputeFinancials() {
+      const { cachedSessions, cachedShuttles, cachedUsers } = window.appState;
+      if (!cachedUsers.length) return;
+
+      const individualBalances = {};
+      cachedUsers.forEach(u => individualBalances[u.uid] = { email: u.email, courtShare: 0, shuttleShare: 0, totalVisits: 0 });
+
+      // Step A: Court Fees Split Rule
+      cachedSessions.forEach(session => {
+        const dayAttendees = session.players || [];
+        if (dayAttendees.length > 0) {
+          const splitShare = session.cost / dayAttendees.length;
+          dayAttendees.forEach(pid => {
+            if (individualBalances[pid]) {
+              individualBalances[pid].courtShare += splitShare;
+              individualBalances[pid].totalVisits += 1;
+            }
+          });
+        }
+      });
+
+      // Step B: Shuttlecock Expenses Split Rule
+      cachedShuttles.forEach(shuttle => {
+        const matchingSessionsInWindow = cachedSessions.filter(s => s.date >= shuttle.startDate && s.date <= shuttle.endDate);
+        const totalVisitsInPeriod = matchingSessionsInWindow.reduce((sum, s) => sum + (s.players || []).length, 0);
+
+        if (totalVisitsInPeriod > 0) {
+          const shuttleUnitCostPerVisit = shuttle.totalCost / totalVisitsInPeriod;
+          matchingSessionsInWindow.forEach(s => {
+            (s.players || []).forEach(pid => {
+              if (individualBalances[pid]) {
+                individualBalances[pid].shuttleShare += shuttleUnitCostPerVisit;
+              }
+            });
+          });
+        }
+      });
+
+      // Step C: Render Ledger Summary Output
+      let ledgerHtml = '<div style="background:rgba(15,23,42,0.4); border-radius:var(--radius-md); overflow:hidden;">';
+      for (const [uid, record] of Object.entries(individualBalances)) {
+        const combinedBill = record.courtShare + record.shuttleShare;
+        ledgerHtml += `
+          <div class="ledger-row">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem;">${record.email} ${uid === window.auth.currentUser.uid ? '(You)' : ''}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted)">Visits: ${record.totalVisits} | Court Share: ₹${record.courtShare.toFixed(2)} | Shuttle Share: ₹${record.shuttleShare.toFixed(2)}</div>
+            </div>
+            <div style="font-weight:700; color:var(--brand-accent); font-size:1.05rem;">₹${combinedBill.toFixed(2)}</div>
+          </div>`;
+      }
+      ledgerHtml += '</div>';
+      document.getElementById('ledgerSummaryContainer').innerHTML = ledgerHtml;
+    }
+  </script>
+</body>
+</html>
