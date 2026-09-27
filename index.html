@@ -180,15 +180,19 @@
             if (existing.exists) throw { message: "That username is already taken." };
             return window.auth.createUserWithEmailAndPassword(e, p);
           })
-          .then(cred => window.db.collection('users').limit(1).get().then(snap => {
-            wasFirstUser = snap.empty;
-            return Promise.all([
+          .then(cred => window.db.collection('meta').doc('bootstrap').get().then(snap => {
+            wasFirstUser = !snap.exists;
+            const writes = [
               window.db.collection('users').doc(cred.user.uid).set({
                 username: uname, email: e, approved: wasFirstUser, isAdmin: wasFirstUser,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
               }),
               window.db.collection('usernames').doc(uname).set({ email: e, uid: cred.user.uid })
-            ]);
+            ];
+            if (wasFirstUser) {
+              writes.push(window.db.collection('meta').doc('bootstrap').set({ adminCreated: true, by: cred.user.uid, at: firebase.firestore.FieldValue.serverTimestamp() }));
+            }
+            return Promise.all(writes);
           }))
           .then(() => window.auth.signOut())
           .then(() => {
@@ -249,7 +253,7 @@
     }
     function startAdminListeners() {
       window.db.collection('users').onSnapshot(s => {
-        let pHtml = '<b>👑 Open Approvals Queue:</b>', prHtml = '<b style="display:block; margin-top:14px;">👑 User List:</b>', hP = false;
+        let pHtml = '<b>👑 Open Approvals Queue:</b>', prHtml = '<b style="display:block; margin-top:14px;">👑 User list:</b>', hP = false;
         s.forEach(d => {
           const u = d.data();
           if (u.approved === false) { hP = true; pHtml += `<div class="toggle-row"><span>${u.email}</span><button class="small" onclick="adminToggleField('${d.id}','approved',true)">Approve</button></div>`; }
