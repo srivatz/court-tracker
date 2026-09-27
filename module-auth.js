@@ -164,3 +164,4 @@ function promoteToAdmin(userId) {
   .then(() => alert("User successfully promoted to Admin!"))
   .catch(err => alert("Promotion failed: " + err.message));
 }
+window.submitAuth = submitAuth;
