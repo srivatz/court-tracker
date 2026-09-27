@@ -1,382 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Badminton Court Tracker</title>
-<style>
-  :root{
-    --bg:#f7f8fa; --card:#ffffff; --text:#1a1d23; --muted:#6b7280;
-    --accent:#16a34a; --accent-dark:#15803d; --border:#e5e7eb; --danger:#dc2626;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#14161a; --card:#1e2126; --text:#e8eaed; --muted:#9aa0a8;
-      --accent:#22c55e; --accent-dark:#16a34a; --border:#2c2f36;
-    }
-  }
-  *{box-sizing:border-box;}
-  body{margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-  .wrap{max-width:720px; margin:0 auto; padding:16px 14px 60px;}
-  h1{font-size:1.25rem; margin:4px 0 2px;}
-  .sub{color:var(--muted); font-size:0.85rem; margin-bottom:14px;}
-  .name-bar{display:flex; gap:8px; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:10px;}
-  .name-bar input{flex:1; min-width:0;}
-  .admin-bar{display:flex; gap:8px; align-items:center; flex-wrap:wrap; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 12px; margin-bottom:14px; font-size:0.78rem; color:var(--muted);}
-  .admin-bar b{color:var(--text)}
-  .tabs{display:flex; gap:6px; margin-bottom:14px; overflow-x:auto;}
-  .tab{flex:1; text-align:center; padding:9px 6px; border-radius:8px; cursor:pointer; background:var(--card); border:1px solid var(--border); font-size:0.85rem; white-space:nowrap;}
-  .tab.active{background:var(--accent); color:#fff; border-color:var(--accent);}
-  .card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px;}
-  .card h2{font-size:1rem; margin:0 0 10px;}
-  label{display:block; font-size:0.78rem; color:var(--muted); margin:8px 0 4px;}
-  input, button, select{font-family:inherit; font-size:0.9rem; padding:9px 10px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text);}
-  input, select{width:100%;}
-  button{background:var(--accent); color:#fff; border:none; cursor:pointer; font-weight:600;}
-  button:active{background:var(--accent-dark);}
-  button.secondary{background:transparent; color:var(--text); border:1px solid var(--border); font-weight:500;}
-  button.small{padding:5px 9px; font-size:0.78rem; border-radius:6px;}
-  .booking-row{display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); gap:10px;}
-  .booking-row:last-child{border-bottom:none;}
-  .b-date{font-weight:600; font-size:0.92rem;}
-  .b-meta{color:var(--muted); font-size:0.78rem;}
-  .players{color:var(--muted); font-size:0.78rem; margin-top:2px;}
-  table{width:100%; border-collapse:collapse; font-size:0.82rem;}
-  th,td{text-align:left; padding:7px 5px; border-bottom:1px solid var(--border);}
-  th{color:var(--muted); font-weight:600; font-size:0.72rem; text-transform:uppercase;}
-  .tablewrap{overflow-x:auto;}
-  .paid{color:var(--accent); font-weight:600;}
-  .unpaid{color:var(--danger); font-weight:600;}
-  .empty{color:var(--muted); font-size:0.85rem; text-align:center; padding:20px 0;}
-  .totals{display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;}
-  .stat{background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:0.78rem; flex:1; min-width:110px;}
-  .stat b{display:block; font-size:1.05rem; margin-top:2px;}
-  .hint{font-size:0.72rem; color:var(--muted); margin-top:6px; line-height:1.4;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badminton Court Portal</title>
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Core SDK Scripts -->
+  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
 </head>
 <body>
-<div class="wrap" id="authWrap">
-  <h1>🏸 Court Tracker</h1>
-  <div class="sub">Sign in or create an account to see and manage bookings. Only registered members of your group can view this data.</div>
-  <div class="card">
-    <div class="tabs">
-      <div class="tab active" id="loginTabBtn" onclick="showAuthTab('login')">Sign in</div>
-      <div class="tab" id="registerTabBtn" onclick="showAuthTab('register')">Register</div>
+  <div class="portal-container">
+    
+    <!-- Authentication Layer Wrapper -->
+    <div id="authWrap" class="panel-card">
+      <h2>🏸 Court Tracker Entry Portal</h2>
+      <input type="email" id="authEmail" placeholder="Email Address" style="margin-bottom:12px;">
+      <input type="password" id="authPassword" placeholder="Password Fields">
+      <button onclick="submitAuth()" style="margin-top:14px;">Access Portal Account</button>
     </div>
-    <div id="authError" style="color:var(--danger); font-size:0.82rem; margin-bottom:6px; display:none"></div>
-    <label>Email</label>
-    <input type="email" id="authEmail" placeholder="you@example.com">
-    <label>Password</label>
-    <input type="password" id="authPassword" placeholder="At least 6 characters">
-    <button id="authSubmitBtn" style="margin-top:10px;width:100%" onclick="submitAuth()">Sign in</button>
-    <div class="hint">Creating an account does not automatically grant access — the group admin still has to approve your email before you can see any bookings (see below).</div>
-  </div>
-</div>
 
-<div class="wrap" id="appWrap" style="display:none">
-  <h1>🏸 Court Tracker</h1>
-  <div class="sub">Sessions are always Thursdays & Saturdays. Join, split costs, track payments.</div>
+    <!-- Protected Application Views Layout Skeletons -->
+    <div id="appWrap" style="display:none;">
+      
+      <!-- Admin Action Bars Panel Elements -->
+      <div id="adminBar" class="panel-card" style="display:none; border-color:var(--brand-accent);"></div>
 
-  <div class="name-bar">
-    <span style="font-size:0.8rem;color:var(--muted);">You:</span>
-    <input id="nameInput" placeholder="Your name" />
-    <button class="small" onclick="saveName()">Save</button>
-    <button class="small secondary" onclick="doSignOut()">Sign out</button>
-  </div>
-
-  <div class="admin-bar" id="adminBar"></div>
-
-  <div class="tabs">
-    <div class="tab active" data-tab="bookings" onclick="switchTab('bookings')">Sessions</div>
-    <div class="tab" data-tab="shuttles" onclick="switchTab('shuttles')">Shuttlecocks</div>
-    <div class="tab" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
-  </div>
-
-  <div id="tab-bookings">
-    <div class="card" id="genCard">
-      <h2>Generate upcoming sessions</h2>
-      <label>Court cost per session (₹/$)</label>
-      <input type="number" id="genCost" placeholder="e.g. 600">
-      <label>How many upcoming Thu/Sat sessions</label>
-      <input type="number" id="genCount" value="4">
-      <button style="margin-top:10px;width:100%" onclick="generateSessions()">Generate</button>
-      <div class="hint">Only ever creates Thursdays and Saturdays, starting from the next one. Existing sessions are left untouched.</div>
-    </div>
-    <div class="card">
-      <h2>Upcoming & past sessions</h2>
-      <div id="bookingsList" class="empty">Loading…</div>
-    </div>
-  </div>
-
-  <div id="tab-shuttles" style="display:none">
-    <div class="card" id="newShuttleCard">
-      <h2>New shuttlecock purchase</h2>
-      <label>Covers dates from</label>
-      <input type="date" id="sStart">
-      <label>to</label>
-      <input type="date" id="sEnd">
-      <label>Tubes bought</label>
-      <input type="number" id="sTubes" placeholder="e.g. 5">
-      <label>Total cost (₹/$)</label>
-      <input type="number" id="sCost" placeholder="e.g. 2500">
-      <button style="margin-top:10px;width:100%" onclick="addShuttle()">Add Purchase</button>
-      <div class="hint">Cost is spread evenly across every player-visit within this date range. If two purchases overlap on a date, the one bought most recently covers it.</div>
-    </div>
-    <div class="card">
-      <h2>Purchases</h2>
-      <div id="shuttleList" class="empty">Loading…</div>
-    </div>
-  </div>
-
-  <div id="tab-dashboard" style="display:none">
-    <div class="card">
-      <div class="totals" id="dashTotals"></div>
-      <button class="secondary small" style="margin-top:10px" onclick="exportCsv()">Export CSV</button>
-    </div>
-    <div class="card">
-      <h2>Cost per player, per session</h2>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Date</th><th>Player</th><th>Court</th><th>Shuttle</th><th>Owes</th><th>Status</th></tr></thead>
-          <tbody id="dashBody"></tbody>
-        </table>
+      <!-- Core Interactive Calendar View Section -->
+      <div class="panel-card">
+        <h2>🗓️ Select Dates & Manage Availability</h2>
+        <div class="sub">Click on highlighted match dates to mark your presence or change attendance status flag flags.</div>
+        <div id="calendarDisplayGrid" class="interactive-calendar"></div>
       </div>
-      <div class="empty" id="dashEmpty" style="display:none">No sessions yet.</div>
+
+      <!-- Live Calculated Balances Overview Layout Panel Elements -->
+      <div class="panel-card">
+        <h2>💰 Personal Ledger and Cost Splits Summary</h2>
+        <div id="userLedgerDisplay" class="sub">Loading financial distributions...</div>
+      </div>
+
     </div>
   </div>
-</div>
-<!-- Firebase (free Spark tier) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-<script>
-  // 1. Declare Global State Variables FIRST to prevent ReferenceErrors
-  let authMode = 'login';
-  let currentUser = null;
-
-  // 2. Insert your REAL Firebase credentials here (Project Settings -> Web App SDK)
-  const firebaseConfig = {
-    apiKey: "AIzaSyBD8vvKknAVR9ohdRwfaApxQEe1wgh5bf4",
-    authDomain: "badminton-booking-b2c4d.firebaseapp.com",
-    projectId: "badminton-booking-b2c4d",
-    storageBucket: "badminton-booking-b2c4d.firebasestorage.app",
-    messagingSenderId: "127883683538",
-    appId: "1:127883683538:web:54d610d66536bed3e46f0b"
-  };
-
-  // 3. Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const auth = firebase.auth();
-
-  // 4. UI Toggle: Switch between Sign In and Register Tabs
-  function showAuthTab(mode) {
-    authMode = mode;
-    const loginBtn = document.getElementById('loginTabBtn');
-    const registerBtn = document.getElementById('registerTabBtn');
-    const submitBtn = document.getElementById('authSubmitBtn');
-    const hintDiv = document.querySelector('.hint');
-    
-    document.getElementById('authError').style.display = 'none';
-
-    if (mode === 'login') {
-      loginBtn.classList.add('active');
-      registerBtn.classList.remove('active');
-      submitBtn.innerText = 'Sign in';
-    } else {
-      loginBtn.remove('active');
-      registerBtn.classList.add('active');
-      submitBtn.innerText = 'Register';
-    }
-  }
-
-  // 5. Authentication Logic: Handle Registration and Login Submissions
-  function submitAuth() {
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value;
-    const errorDiv = document.getElementById('authError');
-
-    if (!email || !password) {
-      errorDiv.innerText = "Please fill in all fields.";
-      errorDiv.style.display = 'block';
-      return;
-    }
-
-    errorDiv.style.display = 'none';
-
-    if (authMode === 'login') {
-      auth.signInWithEmailAndPassword(email, password)
-        .catch(error => {
-          errorDiv.innerText = error.message;
-          errorDiv.style.display = 'block';
-        });
-    } else {
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(userCredential => {
-          // AUTO-APPROVAL BYPASS: Write user instantly to Firestore with approved: true
-          return db.collection('users').doc(userCredential.user.uid).set({
-            email: email,
-            approved: true, // Overrides the admin bottleneck lockout
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        })
-        .catch(error => {
-          errorDiv.innerText = error.message;
-          errorDiv.style.display = 'block';
-        });
-    }
-  }
-
-  // 6. Monitor Authentication States 
-  auth.onAuthStateChanged(user => {
-    const authWrap = document.getElementById('authWrap');
-    const appWrap = document.getElementById('appWrap');
-
-    if (user) {
-      currentUser = user;
-      
-      // Fetch Firestore user doc to confirm approval
-      db.collection('users').doc(user.uid).get().then(doc => {
-        if (doc.exists && doc.data().approved) {
-          authWrap.style.display = 'none';
-          appWrap.style.display = 'block';
-          
-          // Pre-populate display name or email if name isn't set yet
-          document.getElementById('nameInput').value = user.displayName || user.email.split('@')[0];
-          loadDashboardData();
-        } else {
-          // If fallback fails and user document is unapproved
-          auth.signOut();
-          alert("Your account is awaiting approval by the group admin.");
-        }
-      });
-    } else {
-      currentUser = null;
-      authWrap.style.display = 'block';
-      appWrap.style.display = 'none';
-    }
-  });
-
-  // 7. Core Feature Hook: Update user profile display names
-  function saveName() {
-    const newName = document.getElementById('nameInput').value.trim();
-    if (!newName) return alert("Name cannot be empty.");
-
-    currentUser.updateProfile({ displayName: newName })
-      .then(() => {
-        alert("Name updated successfully!");
-        loadDashboardData();
-      })
-      .catch(err => alert(error.message));
-  }
-
-  // 8. Sign Out Handler
-  function doSignOut() {
-    auth.signOut();
-  }
-
-  // 9. Navigation Logic: Manage Portal Main App Tabs
-  function switchTab(tabName) {
-    const tabs = ['bookings', 'shuttles', 'dashboard'];
-    tabs.forEach(t => {
-      document.getElementById(`tab-${t}`).style.display = (t === tabName) ? 'block' : 'none';
-      const tabElement = document.querySelector(`[data-tab="${t}"]`);
-      if (tabElement) {
-        if (t === tabName) tabElement.classList.add('active');
-        else tabElement.classList.remove('active');
-      }
-    });
-  }
-
-  // 10. Dashboard Data Loader: Fetches Calendar Sessions from Firestore
-  function loadDashboardData() {
-    const listContainer = document.getElementById('bookingsList');
-    
-    // Listens to your Firestore sessions collection in real-time
-    db.collection('sessions').orderBy('date', 'asc').limit(20)
-      .onSnapshot(snapshot => {
-        if (snapshot.empty) {
-          listContainer.innerHTML = '<div class="empty">No sessions generated yet. Click generate above.</div>';
-          return;
-        }
-
-        let html = '';
-        snapshot.forEach(doc => {
-          const session = doc.data();
-          html += `
-            <div class="booking-row">
-              <div>
-                <div class="b-date">${session.date} (${session.day})</div>
-                <div class="b-meta">Cost: ${session.cost} | Players marked: ${(session.players || []).length}</div>
-              </div>
-              <button class="small" onclick="toggleAttendance('${doc.id}')">
-                ${(session.players || []).includes(currentUser.uid) ? 'Leave' : 'Join'}
-              </button>
-            </div>`;
-        });
-        listContainer.innerHTML = html;
-      }, error => {
-        listContainer.innerHTML = `<div class="empty" style="color:var(--danger)">Error: ${error.message}</div>`;
-      });
-  }
-
-  // 11. Calendar Logic: Generate fixed Thursday / Saturday Slots
-  function generateSessions() {
-    const cost = parseFloat(document.getElementById('genCost').value);
-    const count = parseInt(document.getElementById('genCount').value) || 4;
-
-    if (!cost || cost <= 0) return alert("Please enter a valid court cost.");
-
-    let generated = 0;
-    let currentDate = new Date();
-
-    while (generated < count) {
-      currentDate.setDate(currentDate.getDate() + 1);
-      const dayIdx = currentDate.getDay(); // 4 = Thursday, 6 = Saturday
-      
-      if (dayIdx === 4 || dayIdx === 6) {
-        const dateString = currentDate.toISOString().split('T')[0];
-        const dayName = dayIdx === 4 ? 'Thursday' : 'Saturday';
-
-        // Write calendar record to Firestore
-        db.collection('sessions').doc(dateString).set({
-          date: dateString,
-          day: dayName,
-          cost: cost,
-          generatedBy: currentUser.uid
-        }, { merge: true });
-
-        generated++;
-      }
-    }
-    alert(`${count} upcoming Thursday & Saturday sessions generated!`);
-  }
-
-  // 12. Marking Calendar: Attend or Leave a Session
-  function toggleAttendance(sessionId) {
-    const docRef = db.collection('sessions').doc(sessionId);
-    
-    db.runTransaction(transaction => {
-      return transaction.get(docRef).then(doc => {
-        if (!doc.exists) return;
-        
-        let players = doc.data().players || [];
-        if (players.includes(currentUser.uid)) {
-          // Remove player array reference
-          players = players.filter(id => id !== currentUser.uid);
-        } else {
-          // Add player array reference
-          players.push(currentUser.uid);
-        }
-        transaction.update(docRef, { players: players });
-      });
-    }).catch(err => alert("Error updating attendance: " + err.message));
-  }
-
-  // Stubs for remaining tracking sections
-  function addShuttle() { alert("Shuttle purchase tracking connected!"); }
-  function exportCsv() { alert("Exporting data summary!"); }
-</script>
+  <!-- Internal Business Infrastructure Code Modules Imports -->
+  <script src="app-config.js"></script>
+  <script src="module-expenses.js"></script>
+  <script src="module-sessions.js"></script>
+  <script src="module-auth.js"></script>
 </body>
 </html>
